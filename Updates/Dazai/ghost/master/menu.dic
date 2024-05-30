@@ -1,0 +1,1564 @@
+﻿//---------------------------Menus--------------------------
+
+//--OpenSakuraMenu
+//This is a bit of intro dialogue before the main character opens their menu. You can see below that there are three pieces of separate dialogue listed before it goes to MenuRun. The character will randomly choose one of those pieces of dialogue before opening the rest of their menu. You can customize this with individual greetings for the character, such as "Yes, %(username)?" or "Need something, %(username)?" or things like that. Note that none of the lines end with \e!
+//The \b2 tag tells the ghost to use their big balloon for this dialogue. If your menu has a lot of stuff, this'll probably look better than the small one.
+//If you don't want multiple responses before opening the menu, you can delete the dialogue and just leave MenuRun.
+
+OpenSakuraMenu
+{
+		"\b2\w1H\w2m\w2?"
+		"\i[5]\b2(You look at him.)"
+		"\i[5]\b2\w1.\w2.\w2."
+		"\b2What is it?"
+		"\b2Y\w1e\w1s\w1?"
+		--
+		MenuRun
+}
+
+//--MenuRun
+//As you just saw above. This actually fills out the rest of the menu. If you're going to be adding or changing functions, this is where you'll be doing your edits.
+
+MenuRun
+ {	
+ 	wd = GetWeekDay
+ 	ap = GetAP
+	//These four statements basically get the day of the week, whether it's AM or PM, the hour, and the time. It's putting together the information to display the time at the bottom of the balloon. Pay it no mind.
+	--
+	"\n\n\_q\b2" //The \n\n means two new lines as detailed in the walkthrough, and \_q means quick session, meaning all the text from this point on will display instantly instead of a few letters at a time like normal ghost dialogue.
+	--
+	if lastTalk != "" //What this does is check to see if the ghost has already said a random bit of dialogue on its own, essentially by seeing if the lastTalk thing is NOT empty (!= means "does not equal").
+	{
+	  "\![*]\q[Repeat that,OnLastTalk]\n\n"
+	  //If the ghost has said something, it will then display this menu option. You can replace "Repeat Last Dialogue" with whatever caption you like, such as "What were you saying?" or "What did you say?" or "Could you repeat that?" or something like that.
+	  
+	  //*********************Advanced User Info*******************************
+	  //These text boxes are meant for those who have an interest in expanding or using more complicated functions in their ghost. Also for my own reference in the future since I plan on using this template too, haha. If you have no interest in any of this and just want to keep things as simple as possible, feel free to skip these boxes.
+	  
+	  //I briefly touched in bootend.dic about \q, but I'll again cover it here. Pay very close attention to how this bit of dialogue is formatted. You'll see it goes \![*]\q[Displayed Name,linkedfunction]. Breaking it down, \![*] puts the balloon's option icon in front of the choice (usually a > or something), \q sets up the choice, Displayed Name which is the text that will display in the ghost's balloon, then linkedfunction, which is what the choice is linked to when the user clicks it. As you go through this file, look at how every menu option is set up, and you will see they all follow this format, give or take a \![*]. If you're going to be adding new options to menus or creating your own functions and such, make sure you follow this format and learn it well. Make sure to read the coding page of the walkthrough.
+	  //***********************************************************************
+	}
+	--
+ 	"\![*]\q[Say something,OnAiTalk]\n"
+	"\![*]\q[Say something,OnAiTalk]\n"
+	
+	//This option will force the ghost to say something from aitalk if the user clicks it. Just replace "Say something" and "Say something 2" with whatever captions you think would be appropriate for such an option. IF you don't want two options for captions, delete one of the lines.
+	//Advanced users, you can add multiple captions for any option you add to a menu you make just like this, as long as you separate it from the other options into its own section with two dashes above and below.
+	--
+	"\![*]\q[Ask him a question,askmenu]\n\n[half]/
+	\![*]\q[Order a drink,drinkmenu]\n\n/
+	\![*]\q[Status menu,configmenu]\n/
+	\![*]\q[Functions,dosomething]\n\n\n[half]/
+ 	\![*]\q[Nevermind,CANCEL]\n\n%(wd) %(nowhour):%(nowmin) %(ap), %(month)/%(day)/%(year)\e"
+	
+	//These three lead to the Config Menu, the Function menu, and Cancel. You can leave these alone if you like. All the envelopes at the end (see word.dic) basically display the year, month, day, weekday, and time.
+}
+
+
+//----------ASK TOWN--------------------------------------------------
+Select.askmenu
+{
+	"\i[5](Ask about...)\n\n\_q"
+	--
+	if dazainame == 0
+	{
+		"\![*]\q[His name,Dazainame]      "
+	}
+	else
+	{
+		"\![*]\q[Dazai,Dazaiquestions]      "
+	}
+	--
+	"\![*]\q[Yourself,youquestions]      "
+	--
+	if odaknown == 0 && angoknown == 0
+	{
+		"\n\n[half]\![*]\q[Companions,Friendsname]"
+	}
+	--
+	if odaknown == 1
+	{
+		"\n\n[half]\![*]\q[Odasaku,Odaquestions]    "
+	}
+	--
+	if angoknown == 1
+	{
+		"\![*]\q[Ango,Angoquestions]    "
+	}
+	--
+	if chuuyaknown == 1
+	{
+		"\![*]\q[Chuuya,Chuuyaquestions]"
+	}
+	--
+	if RAND(250) < 2
+	{
+		"\n\n[half]\![*]\q[Atsushi,randomquestionsanswers1]      "
+		"\n\n[half]\![*]\q[Kunikida,randomquestionsanswers2]      "
+		"\n\n[half]\![*]\q[Yosano,randomquestionsanswers3]      "
+		"\n\n[half]\![*]\q[Fukuzawa,randomquestionsanswers4]      "
+		"\n\n[half]\![*]\q[Ranpo,randomquestionsanswers5]      "
+		"\n\n[half]\![*]\q[Kenji,randomquestionsanswers6]      "
+		"\n\n[half]\![*]\q[Tanizaki,randomquestionsanswers7]      "
+	}
+	--
+	if mafiaknown == 1
+	{
+		"\n\n[half]\![*]\q[Mafia,mafiaquestions]      "
+	}
+	else
+	{
+		"\n\n[half]\![*]\q[Job,jobquestions]      "
+	}
+	--
+	"\![*]\q[The bandages,awkwardquestions]      \n\n\n[half]/
+	//\![*]\q[Other,otherquestions]\n\n\n[half]/
+ 	\![*]\q[Nothing,CANCEL]\e"
+}
+
+//-------------DRINK TIME---------------------------------------------
+Select.drinkmenu
+{
+	"\b2\i[5](You want to order...)\n\n\_q"
+	--
+	"\![*]\q[Water,orderwater]\n/
+	\![*]\q[Beer,orderbeer]\n/
+	\![*]\q[Sake,ordersake]\n/
+	\![*]\q[Shochu,ordershochu]\n/
+	\![*]\q[Whiskey,orderwhiskey]\n/
+	\![*]\q[Coctail,ordercocktail]\n/
+	\![*]\q[Wine,orderwine]\n/
+	\![*]\q[Soda,ordersoda]\n/
+	\![*]\q[Juice,orderjusice]\n\n\n[half]/
+ 	\![*]\q[Nothing,CANCEL]\e"
+}
+
+Select.orderwater
+{
+	//yourorder += 1
+	waterorder = 1
+	"\0\i[5](You order a glass of water.)\n\n[half]\w8\w6\s[3]Are you short on money?\e"
+	"\0\i[5](You order a glass of water.)\n\n[half]\w8\w6\s[50]Not in a mood to drink?\e"
+	"\0\i[5](You order a glass of water.)\n\n[half]\w8\w6\s[3]That's all you gonna get?\e"
+	"\0\i[5](You order a glass of water.)\n\n[half]\w8\w6\s[6]Water can be sobering\w4.\w4.\w4.\e"
+	"\0\i[5](You order a glass of water.)\n\n[half]\w8\w6\s[6]Simple choice.\e"
+	"\0\i[5](You order a glass of water. \w8\w6\s[14]\i[5]Dazai raises an eyebrow at you.)\s[14]\e"
+	"\0\i[5](You order a glass of water. \w8\w6\s[3]\i[5]Dazai shoots you a curious glare.)\s[3]\e"
+	"\0\i[5](You order a glass of water.)\e"
+	"\0\i[5](You order a glass of water.)\e"
+	"\0\i[5](You order a glass of water.)\e"
+	"\0\i[5](You order a glass of water.)\e"
+	"\0\i[5](You order a glass of water.)\e"
+}
+Select.orderbeer
+{
+	yourorder += 1
+	waterorder = 0
+	"\0\i[5](You order a glass of beer.)\n\n[half]\w8\w6\s[6]H\w3m\w3m\w3m.\e"
+	"\0\i[5](You order a glass of beer.)\n\n[half]\w8\w6\s[48]Shall we toast?\e"
+	"\0\i[5](You order a glass of beer.)\n\n[half]\w8\w6\s[48]\i[6]Time to drink.\e"
+	"\0\i[5](You order a glass of beer.)\e"
+	"\0\i[5](You order a glass of beer.)\e"
+	"\0\i[5](You order a glass of beer.)\e"
+	"\0\i[5](You order a glass of beer.)\e"
+	"\0\i[5](You order a glass of beer.)\e"
+}
+Select.ordersake
+{
+	yourorder += 1
+	waterorder = 0
+	"\0\i[5](You order sake.)\n\n[half]\w8\w6\s[6]H\w3m\w3m\w3m.\e"
+	"\0\i[5](You order sake.)\n\n[half]\w8\w6\s[48]Shall we toast?\e"
+	"\0\i[5](You order sake.)\n\n[half]\w8\w6\s[48]\i[6]Time to drink.\e"
+	"\0\i[5](You order sake.)\n\n[half]\w8\w6\s[0]Nice choice.\e"
+	"\0\i[5](You order sake.)\e"
+	"\0\i[5](You order sake.)\e"
+	"\0\i[5](You order sake.)\e"
+	"\0\i[5](You order sake.)\e"
+	"\0\i[5](You order sake.)\e"
+}
+Select.ordershochu
+{
+	yourorder += 1
+	waterorder = 0
+	"\0\i[5](You order shochu.)\n\n[half]\w8\w6\s[6]H\w3m\w3m\w3m.\e"
+	"\0\i[5](You order shochu.)\n\n[half]\w8\w6\s[48]Shall we toast?\e"
+	"\0\i[5](You order shochu.)\n\n[half]\w8\w6\s[48]\i[6]Time to drink.\e"
+	"\0\i[5](You order shochu.)\n\n[half]\w8\w6\s[23]Oh,\w4 craving something stronger?\e"
+	"\0\i[5](You order shochu.)\e"
+	"\0\i[5](You order shochu.)\e"
+	"\0\i[5](You order shochu.)\e"
+	"\0\i[5](You order shochu.)\e"
+	"\0\i[5](You order shochu.)\e"
+}
+Select.orderwhiskey
+{
+	yourorder += 1
+	waterorder = 0
+	friendscore += 1
+	"\0\i[5](You order a glass of whiskey.)\n\n[half]\w8\w6\s[6]H\w3m\w3m\w3m.\e"
+	"\0\i[5](You order a glass of whiskey.)\n\n[half]\w8\w6\s[48]Shall we toast?\e"
+	"\0\i[5](You order a glass of whiskey.)\n\n[half]\w8\w6\s[48]\i[6]Time to drink.\e"
+	"\0\i[5](You order a glass of whiskey.)\n\n[half]\w8\w6\s[23]Oh,\w4 craving something stronger?\e"
+	"\0\i[5](You order a glass of whiskey.)\n\n[half]\w8\w6\s[48]A great choice.\e"
+	"\0\i[5](You order a glass of whiskey.)\n\n[half]\w8\w6\s[47]We should clink our glasses together.\e"
+	"\0\i[5](You order a glass of whiskey.)\e"
+	"\0\i[5](You order a glass of whiskey.)\e"
+	"\0\i[5](You order a glass of whiskey.)\e"
+	"\0\i[5](You order a glass of whiskey.)\e"
+	"\0\i[5](You order a glass of whiskey.)\e"
+	"\0\i[5](You order a glass of whiskey.)\e"
+	"\0\i[5](You order a glass of whiskey.)\e"
+	"\0\i[5](You order a glass of whiskey.)\e"
+	"\0\i[5](You order a glass of whiskey.)\e"
+}
+Select.ordercocktail
+{
+	yourorder += 1
+	waterorder = 0
+	"\0\i[5](You order a coctail.)\n\n[half]\w8\w6\s[6]H\w3m\w3m\w3m.\e"
+	"\0\i[5](You order a coctail.)\n\n[half]\w8\w6\s[48]Shall we toast?\e"
+	"\0\i[5](You order a coctail.)\n\n[half]\w8\w6\s[48]\i[6]Time to drink.\e"
+	"\0\i[5](You order a coctail.)\e"
+	"\0\i[5](You order a coctail.)\e"
+	"\0\i[5](You order a coctail.)\e"
+	"\0\i[5](You order a coctail.)\e"
+	"\0\i[5](You order a coctail.)\e"
+}
+Select.orderwine
+{
+	yourorder += 1
+	waterorder = 0
+	"\0\i[5](You order a glass of wine.)\n\n[half]\w8\w6\s[6]E\w3h\w3h\w3h.\e"
+	"\0\i[5](You order a glass of wine.)\n\n[half]\w8\w6\s[48]Shall we toast?\e"
+	"\0\i[5](You order a glass of wine.)\n\n[half]\w8\w6\s[48]\i[6]Time to drink.\e"
+	"\0\i[5](You order a glass of wine. \w8\w6\s[22]\i[5]Dazai gives you a quick look \s[41]\i[5]but doesn't say anything.)\s[41]\e"
+	"\0\i[5](You order a glass of wine.)\e"
+	"\0\i[5](You order a glass of wine.)\e"
+	"\0\i[5](You order a glass of wine.)\e"
+	"\0\i[5](You order a glass of wine.)\e"
+	"\0\i[5](You order a glass of wine.)\e"
+	"\0\i[5](You order a glass of wine.)\e"
+	"\0\i[5](You order a glass of wine.)\e"
+}
+Select.ordersoda
+{
+	yourorder += 1
+	waterorder = 0
+	"\0\i[5](You order soda.)\n\n[half]\w8\w6\s[6]H\w3m\w3m\w3m.\e"
+	"\0\i[5](You order soda.)\n\n[half]\w8\w6\s[50]Not in a mood to drink?\e"
+	"\0\i[5](You order soda.)\n\n[half]\w8\w6\s[1]\i[6]Are you driving by any chance?\e"
+	"\0\i[5](You order soda.)\e"
+	"\0\i[5](You order soda.)\e"
+	"\0\i[5](You order soda.)\e"
+	"\0\i[5](You order soda.)\e"
+	"\0\i[5](You order soda.)\e"
+}
+Select.orderjusice
+{
+	yourorder += 1
+	waterorder = 0
+	"\0\i[5](You order a glass of juice.)\n\n[half]\w8\w6\s[6]H\w3m\w3m\w3m.\e"
+	"\0\i[5](You order a glass of juice.)\n\n[half]\w8\w6\s[50]Not in a mood to drink?\e"
+	"\0\i[5](You order a glass of juice.)\n\n[half]\w8\w6\s[1]\i[6]Are you driving by any chance?\e"
+	"\0\i[5](You order a glass of juice.)\e"
+	"\0\i[5](You order a glass of juice.)\e"
+	"\0\i[5](You order a glass of juice.)\e"
+	"\0\i[5](You order a glass of juice.)\e"
+	"\0\i[5](You order a glass of juice.)\e"
+}
+
+//%(askagain)
+askagain
+{
+	"\w8\w8\w2\n\n\_q\![*]\q[Ask again?,askmenu]   \![*]\q[I'm done,CANCEL]"
+}
+
+Select.Friendsname
+{
+	odaknown = 1
+	angoknown = 1
+	friendscore += 1
+	"\0\i[5](You ask him about the 'companions' he's waiting for.)\n\n[half]\w8\w6\s[29]I'm waiting for my coworkers \w3\s[23]- we like to come here together to have a few drinks. \w8\w6\s[32]\i[6]The tall one with a thoughtful face, \w3maroon hair and a stubble is Odasaku. \w8\w6\s[32]A businesslike man with big round glasses and a mole on his face is Ango. \w8\w6\s[12]\i[6]Their work schedule is stricter than mine,\n\w3\s[51]\i[6]so often I am the one waiting for them to arrive\w3.\w3.\w3.%(askagain)\e"
+}
+Select.Dazainame
+{
+	dazainame = 1
+	friendscore += 1
+	"\0\i[5](You ask him what his name is.)\n\n[half]\w8\w6\s[0]Oh, \w3\i[6]I didn't even introduce myself, \w3did I? \w8\w6\s[23]I'm Dazai Osamu, \w3it's a pleasure to meet you. \w8\w6\s[9]And what would your name be?\![open,inputbox,OnNameTeach,-1]\e"
+}
+//About you
+Select.youquestions
+{
+	if friendscore < 70
+	{
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[26]\i[6]It's simple, \w3just like I said \w3\s[35]\i[6]- boredom.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[32]It's just you and me here, \w3\s[23]and I like to chat.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[0]Who else am I supposed to talk to? I can talk with the bartender, but it would be his job to talk to me, and that's not the same.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[6]You seem to be a human.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[41]You must be quite lonely if you come to a bar and drink alone.\i[5]\n\n[half]\w8\w6(You tell him he's here drinking alone as well.)\n\n[half]\w8\w6\s[49]It doesn't count, \w3\s[13]\i[6]I'm waiting for my company to arrive.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[3]You look old enough to drink. \w8\w6\s[0]Even if you aren't,\w3\s[28]\i[6] I won't tell.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[6]Civillian\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you. \w8\w6\s[41]\i[5]Did he not hear your question?)\s[41]%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you. \w8\w6\s[41]\i[5]Did he not hear your question?)\s[41]%(askagain)\e"
+	}
+	if friendscore >= 70 && friendscore < 300 
+	{
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[26]\i[6]It's simple, \w3just like I said \w3\s[35]\i[6]- boredom.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[35]\i[6]You're the only person here besides me.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[23]\i[6]Who else am I supposed to talk to? \w8\w6\s[32]I can talk with the bartender,\w3\s[33]\i[6] but it would be his job to talk to me,\w4\s[0] and that's not the same.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[23]\i[6]Call it personal interest.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[5]Maybe I was hoping I could get a free drink out of you\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[6]You seem to be a human.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[41]You must be quite lonely if you come to a bar and drink alone.\i[5]\n\n[half]\w8\w6(You tell him he's here drinking alone as well.)\n\n[half]\w8\w6\s[49]It doesn't count, \w3\s[13]\i[6]I'm waiting for my company to arrive.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[3]You look old enough to drink. \w8\w6\s[0]Even if you aren't,\w3\s[28]\i[6] I won't tell.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[6]Civillian\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[5]You can be quite interesting\w3.\w3.\w3.%(askagain)\e"
+	}
+	if friendscore >= 300
+	{
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[26]\i[6]It's simple, \w3just like I said \w3\s[35]\i[6]- boredom.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[35]\i[6]You're the only person here besides me.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[23]\i[6]Call it personal interest.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[5]Maybe I was hoping I could get a free drink out of you\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[6]You seem to be a human.%(askagain)\e"
+		"\0\i[5](You ask him why he started talking to you.)\n\n[half]\w8\w6\s[23]\i[6]Who else am I supposed to talk to? \w8\w6\s[32]I can talk with the bartender,\w3\s[33]\i[6] but it would be his job to talk to me,\w4\s[0] and that's not the same.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[3]You look old enough to drink. \w8\w6\s[0]Even if you aren't,\w3\s[28]\i[6] I won't tell.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[6]Civillian\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[5]You can be quite interesting\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[0]You're a good company.%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.\w8\w6\s[7]\i[5] He just smiles.)\s[7]%(askagain)\e"
+		"\0\i[5](You ask him what he thinks about you.)\n\n[half]\w8\w6\s[48]You sure like coming to this bar.%(askagain)\e"
+	}
+}
+//About Dazaizai
+Select.Dazaiquestions
+{
+	if friendscore > 70 && dazaiage == 0 && daysspent > 2
+	{
+		dazaiage = 1
+		friendscore += 5
+		"\0\i[5](You ask Dazai how old he is.)\n\n[half]\w8\w6\s[43]\i[6]I'm too old\w4.\w4.\w4. \w8\w6\s[49]\i[6]Could you imagine, \w4\s[41]I've been existing in this drab world for eighteen years\w4.\w4.\w4. \w8\w8\w8\s[50]What? \n\n[half]\w8\w8\i[5](You ask him if he's serious.)\n\n[half]\w8\w6\s[21]Of course I am! \w8\w6\s[13]Why do you look so surprised? \w8\w6\s[35]\i[6]Yes, \w4I'm eighteen.%(askagain)\e"
+	}
+	elseif friendscore >= 100 && friendscore < 300  && dazaiage == 1 && daysspent > 2
+	{
+		friendscore += 1
+		"\0\i[5](You ask Dazai why he is drinking.)\n\n[half]\w8\w6\s[48]\i[6]Why not?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he dislikes anything.)\n\n[half]\w8\w6\s[24]\i[6]Pain.%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is drinking.)\n\n[half]\w8\w6\s[39]Isn't that what people come into the bar to do?%(askagain)\e"
+		"\0\i[5](You ask Dazai how often he comes to this bar.)\n\n[half]\w8\w6\s[24]\i[6]Any other day, \w3\s[33]but from what I noticed,\w3 \s[32]we seem to intersect quite a lot.%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is drinking.)\n\n[half]\w8\w6\s[48]\i[6]I'm thirsty.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he only drinks whiskey.)\n\n[half]\w8\w6\s[35]\i[6]I drink a lot of things. \w8\w6\s[47]Whiskey is up there with the most healthiest ones!%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[32]\i[6]Of course! \w8\w6\s[46]Attempting suicide.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[48]\i[6]Does drinking count?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[0]I'm quite proficient in the art of lockpicking.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[32]Long night walks, \w4\s[39]walks by the port, \w4walks alongst the beach, \w4\s7]watching the waves\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask Dazai what is his favourite food.)\n\n[half]\w8\w6\s[46]Crab!%(askagain)\e"
+		"\0\i[5](You ask Dazai what is his favourite color.)\n\n[half]\w8\w6\s[41]Is that what people like to think about? \w8\w6The superiority of colors?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he's a cat or dog person.)\n\n[half]\w8\w6\s[21]I \f[italic,true]hate\f[italic,false] dogs, \w4ugh. \w8\w6\s[33]\i[6]I'll take a cat any day.%(askagain)\e"
+		"\0\i[5](You ask Dazai when his birthday is.)\n\n[half]\w8\w6\s[7]Does it matter?%(askagain)\e"
+		"\0\i[5](You ask Dazai when his birthday is.)\n\n[half]\w8\w6\s[7]Does it matter?\w8\w6\s[48]\i[6] Not like I'll turn old enough to drink.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has a lot of friends.)\n\n[half]\w8\w6\s[41]Friends?\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has a lot of friends.)\n\n[half]\w8\w6\s[15]Friends, \w6huh? \w8\w8\w8\s[41]I can't say.%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is drinking.)\n\n[half]\w8\w6\s[7]To keep the bar in business.%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is so thin.)\n\n[half]\w8\w6\s[23]Oh, I'm more resilient than I look.%(askagain)\e"
+	}
+	elseif friendscore >= 300 && daysspent > 4
+	{
+		friendscore += 1
+		"\0\i[5](You ask Dazai why he is drinking.)\n\n[half]\w8\w6\s[48]\i[6]Why not?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he dislikes anything.)\n\n[half]\w8\w6\s[24]\i[6]Pain.%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is drinking.)\n\n[half]\w8\w6\s[7]To keep the bar in business.%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is drinking.)\n\n[half]\w8\w6\s[7]To keep the bar in business, \w4\s[47]so we have a place to meet up in!%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is drinking.)\n\n[half]\w8\w6\s[39]Isn't that what people come into the bar to do?%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is drinking.)\n\n[half]\w8\w6\s[48]\i[6]I'm thirsty.%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is drinking.) \n\n[half]\w8\w6\s[41]\f[sub,true]To quell down the pain brewing within\w4.\w4.\w4.\f[sub,false]%(askagain)\e"
+		"\0\i[5](You ask Dazai if he only drinks whiskey.)\n\n[half]\w8\w6\s[35]\i[6]I drink a lot of things. \w8\w6\s[47]Whiskey is up there with the most healthiest ones!%(askagain)\e"
+		"\0\i[5](You ask Dazai how tall he is.)\n\n[half]\w8\w6\s[23]I'm five-eight. \w8\w6\i[6]And a half! \w8\w6\s[32]That half is very important, \w5\s[17]the taller I am than that redhead gremlin the better.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he knows how to drive.)\n\n[half]\w8\w6\s[43]I d\w4o\w4o\w4o,\w5\s[33]\i[6] but people often say I drive wrecklessly.\w8\w6\s[29] There's nothing wreckless with speeding up a little bit\w4.\w4.\w4.\e%(askagain)"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[32]\i[6]Of course! \w8\w6\s[46]Attempting suicide.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[32]Long night walks, \w4\s[39]walks by the port, \w4walks alongst the beach, \w4\s7]watching the waves\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask Dazai what is his favourite food.)\n\n[half]\w8\w6\s[46]Crab!%(askagain)\e"
+		"\0\i[5](You ask Dazai what is his favourite color.)\n\n[half]\w8\w6\s[41]Is that what people like to think about? \w8\w6The superiority of colors?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he's a cat or dog person.)\n\n[half]\w8\w6\s[21]I \f[italic,true]hate\f[italic,false] dogs, \w4ugh. \w8\w6\s[33]\i[6]I'll take a cat any day.%(askagain)\e"
+		"\0\i[5](You ask Dazai when his birthday is.)\n\n[half]\w8\w6\s[1]If you want to know this much, \w4\s[35]\i[6]it's June nineteenth. \w6\w8\s[15]Birthdays are not a concept I enjoy \w4\s[41]- why would I want to celebrate another year of my existence?%(askagain)\e"
+		"\0\i[5](You ask Dazai when his birthday is.) \n\n[half]\w8\w6\s[41]\f[sub,true]Hopefully I won't get to see it\w4.\w4.\w4.\f[sub,false]%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[23]Listening to music. \w8\w6\s[46]I can share my suicide mixtape with you!%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[29]I quite enjoy video games. \w8\w6\s[32]Fightings games and racing games especially.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he hangs out anywhere besides the bar.)\n\n[half]\w8\w6\s[3]\i[6]Does shipping crate count? \w8\w6\s[6]Probably not, \w4I just live there\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he hangs out anywhere besides the bar.)\n\n[half]\w8\w6\s[46]Arcade can be entertaining. \w8\w6\s[17]Especially when I get to beat people.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he hangs out anywhere besides the bar.)\n\n[half]\w8\w6\s[3]I dunno, \w6\s[8]probably the port.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he hangs out anywhere besides the bar.)\n\n[half]\w8\w6\s[6]Bridges can be a nice place\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he hangs out anywhere besides the bar.)\n\n[half]\w8\w6\s[0]I enjoy the rooftops \w5\s[32]\i[6]- the higher the better.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he hangs out anywhere besides the bar.)\n\n[half]\w8\w6\s[46]You may see me hanging on some nice trees in the park.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has a lot of friends.)\n\n[half]\w8\w6\s[15]Friends, \w6huh? \w8\w8\w8\s[41]I can't say.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has a lot of friends.)\n\n[half]\w8\w6\s[5]Would you call us friends?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he's single.)\n\n[half]\w8\w6\s[5]\i[6]Ah, \w6\s4why do you ask?%(askagain)\e"
+		"\0\i[5](You ask Dazai how often he comes to this bar.)\n\n[half]\w8\w6\s[24]\i[6]Any other day, \w3\s[33]but from what I noticed,\w3 \s[32]we seem to intersect quite a lot.\w8\w6\s[23] At this point,\w4\s[5] sometimes I come just to meet up with you.%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is so thin.)\n\n[half]\w8\w6\s[23]Oh, I'm more resilient than I look.%(askagain)\e"
+	}
+	else
+	{
+		friendscore += 1
+		"\0\i[5](You ask Dazai how old he is.)\n\n[half]\w8\w6\s[23]How old do I look?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he dislikes anything.)\n\n[half]\w8\w6\s[24]\i[6]Pain.%(askagain)\e"
+		"\0\i[5](You ask Dazai how old he is.\w8\w6\s[52] He just continues to sip his drink.)%(askagain)\e"
+		"\0\i[5](You ask Dazai how old he is.)\n\n[half]\w8\w6\s[48]Old enough to drink.\i[5]\n\n[half]\w8\w6(You tell him he looks younger.)\n\n[half]\w8\w6\s[48]\i[6]Oh, \w4do I?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he's old enough to drink.)\n\n[half]\w8\w6\s[41]Here I am, \w4drinking, \w4\s[48]\i[6]isn't that enough of an answer?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he only drinks whiskey.)\n\n[half]\w8\w6\s[35]\i[6]I drink a lot of things. \w8\w6\s[47]Whiskey is up there with the most healthiest ones!%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[32]\i[6]Of course! \w8\w6\s[46]Attempting suicide.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[48]\i[6]Does drinking count?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has any hobbies.)\n\n[half]\w8\w6\s[32]Long night walks, \w4\s[39]walks by the port, \w4walks alongst the beach, \w4\s7]watching the waves\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask Dazai what is his favourite food.)\n\n[half]\w8\w6\s[46]Crab!%(askagain)\e"
+		"\0\i[5](You ask Dazai what is his favourite color.)\n\n[half]\w8\w6\s[41]I'm not drunk enough for such boring conversation.%(askagain)\e"
+		"\0\i[5](You ask Dazai if he's a cat or dog person.)\n\n[half]\w8\w6\s[21]I \f[italic,true]hate\f[italic,false] dogs, \w4ugh. \w8\w6\s[33]\i[6]I'll take a cat any day.%(askagain)\e"
+		"\0\i[5](You ask Dazai when his birthday is.)\n\n[half]\w8\w6\s[7]Does it matter?%(askagain)\e"
+		"\0\i[5](You ask Dazai if he has a lot of friends.)\n\n[half]\w8\w6\s[41]Friends?\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask Dazai how often he comes to this bar.)\n\n[half]\w8\w6\s[24]\i[6]Any other day, \w3\s[33]but from what I noticed,\w3 \s[32]we seem to intersect quite a lot.%(askagain)\e"
+		"\0\i[5](You ask Dazai why he is so thin.)\n\n[half]\w8\w6\s[23]Oh, I'm more resilient than I look.%(askagain)\e"
+	}
+	
+}
+//About Oda
+Select.Odaquestions
+{
+	if friendscore < 70 || daysspent <= 2
+	{
+		friendscore += 1
+		"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[0]That's a nickname, \w5actually, \w4\s[30]so if you ever see him maybe don't call him like that.%(askagain)\e"
+		"\0\i[5](You ask him how long he have been working with Odasaku.)\n\n[half]\w8\w6\s[6]We don't really meet at work much. \w8\w6\s[29]Different areas of expertise\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him how he met Odasaku.)\n\n[half]\w8\w6\s[9]\i[6]If I tell you that he tied me up and dragged into his house, \w4\s[28]would you believe me?%(askagain)\e"
+		"\0\i[5](You ask him where Odasaku works.)\n\n[half]\w8\w6\s[23]At the same place as me \w4\s[32]\i[6]- that's why I call him my coworker.%(askagain)\e"
+		"\0\i[5](You ask him how old is Odasaku.)\n\n[half]\w8\w6\s[41]He's older than me.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[6]Probably work\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[1]\i[6]He's a busy guy.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[41]I can think of a couple of things\w3.\w3.\w3.\w8\w6\s[48]\i[6] No need to be concerned though.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[2]I kn\w4o\w4o\w4o\w4o\w4w, \w6it's been forever! \w8\w6\s[43]\i[6]Where is he?%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Odasaku will show up.)\n\n[half]\w8\w6\s[48]Of course he will.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Odasaku will show up.)\n\n[half]\w8\w6\s[41]He said he would.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Odasaku will show up.)\n\n[half]\w8\w6\s[41]It's been a while\w3.\w3.\w3. \w8\w6\s[48]but I'm sure he will.%(askagain)\e"
+		"\0\i[5](You ask him how long he knows Odasaku.)\n\n[half]\w8\w6\s[6]Quite long\w4.\w4.\w4.\w8%(askagain)\e"
+	}
+	if friendscore >= 70 && friendscore < 300  && daysspent > 2
+	{
+		friendscore += 1
+		"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[7]He's a really peculiar person. \w8\w6\s[0]I never know what he'll say or how\nhe's going to react.%(askagain)\e"
+		"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[9]He's great. \w8\w7\s[2]\i[6]I just wish he'd come here already\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[50]I'm surprised you haven't ran into him yet. \w8\w6I don't always come here first.%(askagain)\e"
+		"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[2]He likes his food way too spicy. \w8\w6\s[43]\i[6]Really, \w4who likes spicy curry?%(askagain)\e"
+		"\0\i[5](You ask him how long he have been working with Odasaku.)\n\n[half]\w8\w6\s[6]We don't really meet at work much. \w8\w6\s[29]Different areas of expertise\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him how he met Odasaku.)\n\n[half]\w8\w6\s[9]\i[6]If I tell you that he tied me up and dragged into his house, \w4\s[28]would you believe me?%(askagain)\e"
+		"\0\i[5](You ask him where Odasaku works.)\n\n[half]\w8\w6\s[23]At the same place as me \w4\s[32]\i[6]- that's why I call him my coworker.%(askagain)\e"
+		"\0\i[5](You ask him how old is Odasaku.)\n\n[half]\w8\w6\s[41]He's older than me.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[6]Probably work\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him if Odasaku is Gifted.)\n\n[half]\w8\w6\s[6]He is. \w8\w6Very powerful, \w4in fact.\w8\w6\s[46] So I advise you not to get at his wrong side.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[1]\i[6]He's a busy guy.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[41]I can think of a couple of things\w3.\w3.\w3.\w8\w6\s[48]\i[6] No need to be concerned though.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[2]I kn\w4o\w4o\w4o\w4o\w4w, \w6it's been forever! \w8\w6\s[43]\i[6]Where is he?%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Odasaku will show up.)\n\n[half]\w8\w6\s[48]Of course he will.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Odasaku will show up.)\n\n[half]\w8\w6\s[41]He said he would.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Odasaku will show up.)\n\n[half]\w8\w6\s[41]It's been a while\w3.\w3.\w3. \w8\w6\s[48]but I'm sure he will.%(askagain)\e"
+		"\0\i[5](You ask him how long he knows Odasaku.)\n\n[half]\w8\w6\s[6]Quite long\w4.\w4.\w4.\w8%(askagain)\e"
+	}
+	if friendscore >= 300 && daysspent > 5
+	{
+		friendscore += 1
+		"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[7]He's a really peculiar person. \w8\w6\s[0]I never know what he'll say or how\nhe's going to react.%(askagain)\e"
+		"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[9]He's great. \w8\w7\s[2]\i[6]I just wish he'd come here already\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him how he met Odasaku.)\n\n[half]\w8\w6\s[9]\i[6]If I tell you that he tied me up and dragged into his house, \w4\s[28]would you believe me?\w8\w8\s[40] It did happen, \w4after all.%(askagain)\e"
+		"\0\i[5](You ask him how old is Odasaku.)\n\n[half]\w8\w6\s[41]He's older than me. \w8\w6\s[48]Twenty three I believe.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[6]Probably work\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[50]I'm surprised you haven't ran into him yet. \w8\w6I don't always come here first.%(askagain)\e"
+		"\0\i[5](You ask him if Odasaku is Gifted.)\n\n[half]\w8\w6\s[6]He is. \w8\w6Very powerful, \w4in fact.\w8\w6\s[46] So I advise you not to get at his wrong side.%(askagain)\e"
+		"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[50]I'm surprised you haven't ran into him yet. \w8\w6I don't always come here first.\i[5]\n\n[half]\w8\w6\s[0](You tell Dazai that you always see him here first.)\n\n[half]\w8\w6\s[51]Tch.\i[6]%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[1]\i[6]He's a busy guy.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[41]I can think of a couple of things\w3.\w3.\w3.\w8\w6\s[48]\i[6] No need to be concerned though.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[6]Kids, \w4maybe\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Odasaku so long.)\n\n[half]\w8\w6\s[2]I kn\w4o\w4o\w4o\w4o\w4w, \w6it's been forever! \w8\w6\s[43]\i[6]Where is he?%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Odasaku will show up.)\n\n[half]\w8\w6\s[48]Of course he will.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Odasaku will show up.)\n\n[half]\w8\w6\s[41]He said he would.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Odasaku will show up.)\n\n[half]\w8\w6\s[41]It's been a while\w3.\w3.\w3. \w8\w6\s[48]but I'm sure he will.%(askagain)\e"
+		"\0\i[5](You ask him how long he knows Odasaku.)\n\n[half]\w8\w6\s[6]Quite long\w4.\w4.\w4.\w8%(askagain)\e"
+		"\0\i[5](You ask him if Odasaku will show up at all.)\n\n[half]\w8\w6\s[13]Hey, \w4don't talk like I made him up! \w8\w6\i[6]I don't need to make up friends.\w8\w6\s[15] He'll come.%(askagain)\e"
+		"\0\i[5](You ask him if Odasaku will show up at all.)\n\n[half]\w8\w6\s[2]It's not my fault you guys always miss each other.%(askagain)\e"
+		"\0\i[5](You ask him if Odasaku will show up at all.)\n\n[half]\w8\w6\s[5]If you stay long enough today, \w3\s[4]\i[6]maybe you'll get to see.%(askagain)\e"
+		if mafiaknown == 1 && RAND(100) < 40
+		{
+			"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[41]He wants to be a writer, \w4you know.\w8\w8 One day quit the mafia and write a book. \w8\w8\s[15]It's such a human wish\w4.\w4.\w4. \w8\w8\s[16]I envy him. \w8\w6\s[9]At the same time, \w4\s[0]I really want to read what he writes one day.%(askagain)\e"
+			"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[29]He handles a lot of odd jobs in the mafia. \w8\w6\s[38]He says he gets the types of jobs no one else wants. \w8\w6\s[30]I, \w4for one, \w4find that very fascinating.\w8\w6\s[32] Everything he tells me always sounds way more entertaining than anything I do at my job.%(askagain)\e"
+			"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[41]There's a thing about Odasaku\w4.\w4.\w4.\w8\w5 He's the only member of the mafia who refuses to kill people. \w8\w6\s[48]Interesting, \w5isn't it? \w8\w8\w8\s[41]To have strong principles, \w4beliefs and convictions\w4.\w4.\w4.%(askagain)\e"
+			"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[38]He's at the very bottom of the mafia hierarchy. \w8\w6\s[15]I've been told that it's weird,\w5 for us to maintain a friendly relationship considering my status in the mafia\w4.\w4.\w4.\w8\w8\s[23] I'm don't see why.%(askagain)\e"
+			"\0\i[5](You ask him about Odasaku.)\n\n[half]\w8\w6\s[6]With his Gift and skills he could've effortlessly risen to the highest echelons of the mafia\w5.\w5.\w5.\w8\w8\w8 But he has made his choice.\w8\w6\s[30] Truly, \w3what a fascinating man.%(askagain)\e"
+			"\0\i[5](You ask him if he trusts Odasaku.)\n\n[half]\w8\w6\s[30]What an interesting question\w4.\w4.\w4.\w8\w8\w8\w8\s[23]\i[6] I do.%(askagain)\e"
+		}
+	}
+}
+//About Ango
+Select.Angoquestions
+{
+	if friendscore < 70 || daysspent <= 2
+	{
+		friendscore += 1
+		"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[0]He's fun. \w8\w6\s[32]\i[6]I know everything I told you about him so far doesn't pain a picture of a fun guy,\w6\s[23] but trust me, \w4\s[0]he's very entertaining to talk to.%(askagain)\e"
+		"\0\i[5](You ask him how long he have been working with Ango.)\n\n[half]\w8\w6\s[1]\i[6]We don't intersect often, \w4so I can't say for sure.%(askagain)\e"
+		"\0\i[5](You ask him how he met Ango.)\n\n[half]\w8\w6\s[32]At work. \w8\w6\s[23]Me and Oda met him at the same day actually.%(askagain)\e"
+		"\0\i[5](You ask him where Ango works.)\n\n[half]\w8\w6\s[23]Where I work. \w8\w6\s[35]\i[6]I didn't call him a coworker just because.%(askagain)\e"
+		"\0\i[5](You ask him how old is Ango.)\n\n[half]\w8\w6\s[6]Older than me.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[1]\i[6]Must be work.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[33]He has a lot of work to do. \w8\w6\s[34]He's way too responsible, \w8\w6\s[2]\i[6]that's why he should come around to drink more\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[3]Paperwork probably. \w8\w6\s[6]A l\w2o\w2o\w2o\w2t of paperwork.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[29]I don't know. \w8\w6\s[44]Maybe I should text him\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Ango will show up.)\n\n[half]\w8\w6\s[6]I hope he does.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Ango will show up.)\n\n[half]\w8\w6\s[48]He said he would come today,\w4 so I'll wait.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Ango will show up.)\n\n[half]\w8\w6\s[1]\i[6]Ango doesn't come every time,\w5\s[0] but I have a hunch that he will come today.%(askagain)\e"
+		"\0\i[5](You ask him how long he knows Ango.)\n\n[half]\w8\w6\s[41]Less time than Odasaku, \w4\s[48]but for quite some time.%(askagain)\e"
+	}
+	if friendscore >= 70 && friendscore < 300 && daysspent > 2
+	{
+		friendscore += 1
+		"\0\i[5](You ask him if Ango is Gifted.)\n\n[half]\w8\w6\s[29]Yeah. \w8\w6\s[32]He has quite a useful ability, \w6\s[23]one even I can be subjected to,\w4\s[30] at least in a way.%(askagain)\e"
+		"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[26]I'm surprised you haven't ran into him yet. \w8\w6\s[35]He does come less than I or Oda, \w5\s[29]but it's still surprising.%(askagain)\e"
+		"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[0]He's fun. \w8\w6\s[32]\i[6]I know everything I told you about him so far doesn't pain a picture of a fun guy,\w6\s[23] but trust me, \w4\s[0]he's very entertaining to talk to.%(askagain)\e"
+		"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[23]\i[6]He's a great company.%(askagain)\e"
+		"\0\i[5](You ask him how long he have been working with Ango.)\n\n[half]\w8\w6\s[1]\i[6]We don't intersect often, \w4so I can't say for sure.%(askagain)\e"
+		"\0\i[5](You ask him how he met Ango.)\n\n[half]\w8\w6\s[29]At work.\w8\w6\s[23]\i[6] Me and Oda met him at the same day actually.%(askagain)\e"
+		"\0\i[5](You ask him where Ango works.)\n\n[half]\w8\w6\s[23]Where I work. \w8\w6\s[35]\i[6]I didn't call him a coworker just because.%(askagain)\e"
+		"\0\i[5](You ask him how old is Ango.)\n\n[half]\w8\w6\s[6]Older than me.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[1]\i[6]Must be work.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[33]He has a lot of work to do. \w8\w6\s[34]He's way too responsible, \w8\w6\s[2]\i[6]that's why he should come around to drink more\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[3]Paperwork probably. \w8\w6\s[6]A l\w2o\w2o\w2o\w2t of paperwork.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[29]I don't know. \w8\w6\s[44]Maybe I should text him\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Ango will show up.)\n\n[half]\w8\w6\s[6]I hope he does.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Ango will show up.)\n\n[half]\w8\w6\s[48]He said he would come today,\w4 so I'll wait.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Ango will show up.)\n\n[half]\w8\w6\s[1]\i[6]Ango doesn't come every time,\w5\s[0] but I have a hunch that he will come today.%(askagain)\e"
+		"\0\i[5](You ask him how long he knows Ango.)\n\n[half]\w8\w6\s[41]Less time than Odasaku, \w4\s[48]but for quite some time.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[38]Some antiques, \w4maybe.%(askagain)\e"
+	}
+	if friendscore >= 300 && daysspent > 5
+	{
+		friendscore += 1
+		"\0\i[5](You ask him if Ango will show up at all.)\n\n[half]\w8\w6\s[21]Don't say it as if he doesn't exist. \w8\w6\s[41]He will, \w4then you'll see.%(askagain)\e"
+		"\0\i[5](You ask him if Ango will show up at all.)\n\n[half]\w8\w6\s[3]\i[26]I can't believe you haven't seen him yet\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him if Ango will show up at all.)\n\n[half]\w8\w6\s[0]\i[6]If you stay long enough today, \w4\s[5]perhaps you'll get to see.%(askagain)\e"
+		"\0\i[5](You ask him if Ango is Gifted.)\n\n[half]\w8\w6\s[29]Yeah. \w8\w6\s[32]He has quite a useful ability, \w6\s[23]one even I can be subjected to,\w4\s[30] at least in a way.%(askagain)\e"
+		"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[26]I'm surprised you haven't ran into him yet. \w8\w6\s[35]He does come less than I or Oda, \w5\s[29]but it's still surprising.%(askagain)\e"
+		"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[23]\i[6]He's a great company.%(askagain)\e"
+		"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[32]He's a great guy. \w8\w6\s[7]I'm glad we dragged him here that day\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him how long he have been working with Ango.)\n\n[half]\w8\w6\s[1]\i[6]We don't intersect often, \w4so I can't say for sure.%(askagain)\e"
+		"\0\i[5](You ask him how he met Ango.)\n\n[half]\w8\w6\s[29]At work.\w8\w6\s[23]\i[6] Me and Oda met him at the same day actually. \w8\w6\s[27]Perhaps there was some coercion involved, \w5\i[6]but who can say.%(askagain)\e"
+		"\0\i[5](You ask him how old is Ango.)\n\n[half]\w8\w6\s[3]\i[6]Older than me. \w8\w6\s[35]\i[6]I think he mentioned he's twenty two.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[26]Knowing him? \w8\w6\s[24]\i[6]Work.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[38]Some antiques, \w4maybe.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[33]He has a lot of work to do. \w8\w6\s[34]He's way too responsible, \w8\w6\s[2]\i[6]that's why he should come around to drink more\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[3]Paperwork probably. \w8\w6\s[6]A l\w2o\w2o\w2o\w2t of paperwork.%(askagain)\e"
+		"\0\i[5](You ask him what might be taking Ango so long.)\n\n[half]\w8\w6\s[29]I don't know. \w8\w6\s[44]Maybe I should text him\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Ango will show up.)\n\n[half]\w8\w6\s[6]I hope he does.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Ango will show up.)\n\n[half]\w8\w6\s[48]He said he would come today,\w4 so I'll wait.%(askagain)\e"
+		"\0\i[5](You ask him if he is sure Ango will show up.)\n\n[half]\w8\w6\s[1]\i[6]Ango doesn't come every time,\w5\s[0] but I have a hunch that he will come today.%(askagain)\e"
+		"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[5]Would you believe me if I told you that the first time we brought Ango here was because we annoyed him into coming with us? \w8\w6\s[30]Heh\w3.\w3.\w3.%(askagain)\e"
+		if mafiaknown == 1 && RAND(100) < 40
+		{
+			"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[35]\i[6]He's one of the mafia clerks, so usually he's busy with paperwork at his office. \w8\w6\s[29]His office is quite cramped, \w5\s[30]but he takes the file organization very seriously.%(askagain)\e"
+			"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[6]He's an informant,\w4 so he handles a lot of sensetive mafia information\w4.\w4.\w4.\w8\w6\s[0]\i[6] A lot of people would love to see him dead.%(askagain)\e"
+			"\0\i[5](You ask him about Ango.)\n\n[half]\w8\w6\s[41]It takes a lot of guts to occupy his position\w4.\w4.\w4.\w8\w6\s[51] Quite different kind of resolve you need to posses to only be a simple member of the mafia. \w\w\s[48]\i[6]Very admirable.%(askagain)\e"
+			"\0\i[5](You ask him if he trusts Ango.)\n\n[half]\w8\w6\s[23]Work-wise or personally? \w8\w4\s[7]H\w3m\w3m\w3m\w3.\w3.\w3.\w8\w8\w8\w8\s[32]\i[6] It would be odd if I didn't.%(askagain)\e"
+		}
+	}
+}
+//About Chuuya
+Select.Chuuyaquestions
+{
+	if friendscore < 150 || daysspent <= 3
+	{
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[21]Ugh, \w4\s[41]I don't want to talk about that slug.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[38]He has a terrible fashion sense.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[1]\i[6]He's the loudest person I've ever met. \w8\w6\s[22]Maybe because he yells straight into my ears so much\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[30]He can be quite entertaining\w4.\w4.\w4.\w8\w6\s[23]\i[6] In a way that a little dog barking up a hydrant is entertaining.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[22]Ugh\w4.\w4.\w4.\n\n[half]\w8\w6\s[0]\i[5](It doesn't seem like he wants to add anything more.)\s[22]%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[38]You can probably recognize him on the street if you happen to see him \w6\s[24]\i[6]- no one else wears a dumb hat unironically.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[32]He's very, \w4extremely, \w5unbearably\w2 short. \w8\w6\s[31]Poor thing thinks he'll grow up yet\w3.\w3.\w3. \w8\w4\s[9]\i[6]Oh, I kind of pity him.\w8\w8\s[8] Or maybe I don't.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[2]\i[6]Do we \w2HAVE\w2 to talk about him?%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[2]I don't come here to talk about him. \w8\w6\s[6]Hmph.\w6%(askagain)\e"
+		"\0\i[5](You ask him how long he have been working with Chuuya.)\n\n[half]\w8\w6\s[2]\i[6]Three years too long.%(askagain)\e"
+		"\0\i[5](You ask him how he met Chuuya.)\n\n[half]\w8\w6\s[39]He punched my face in the middle of the slums. \w8\w6\s[28]Sounds like a great guy,\n\w4\f[italic,true]right?\f[italic,false]%(askagain)\e"
+		"\0\i[5](You ask him why he and Chuuya are work partners.)\n\n[half]\w8\w6\s[40]I'm such a skillful worker I can work with any pathetic slug and produce great results.%(askagain)\e"
+		"\0\i[5](You ask him how old is Chuuya.)\n\n[half]\w8\w6\s[33]\i[6]He's around my age. \w8\w6\s[46]Except he still looks like an angsty teen that he is on the inside.%(askagain)\e"
+		"\0\i[5](You ask him if Chuuya ever visits this bar.)\n\n[half]\w8\w6\s[6]No,\w4 thankfully no.%(askagain)\e"
+	}
+	if friendscore >= 150 && friendscore < 300 && daysspent > 3
+	{
+		friendscore += 1
+		"\0\i[5](You ask him if Chuuya is Gifted.)\n\n[half]\w8\w6\s[41]He might be the most dangerous Gifted of them all, on sheer level of power\w3.\w3.\w3.\w8\w6\s[47] But not to me. \w8\w8\s[21]To me, \w4he is regular pain in the ass.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[38]He has a terrible fashion sense.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[1]\i[6]He's the loudest person I've ever met. \w8\w6\s[22]Maybe because he yells straight into my ears so much\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[30]He can be quite entertaining\w4.\w4.\w4.\w8\w6\s[23]\i[6] In a way that a little dog barking up a hydrant is entertaining.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[2]You know he doesn't have taste when he prefers dogs over cats. \w8\w6\s[38]He probably likes cake more than pie, \w4too.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[38]You can probably recognize him on the street if you happen to see him \w6\s[24]\i[6]- no one else wears a dumb hat unironically.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[32]He's very, \w4extremely, \w5unbearably\w2 short. \w8\w6\s[31]Poor thing thinks he'll grow up yet\w3.\w3.\w3. \w8\w4\s[9]\i[6]Oh, I kind of pity him.\w8\w8\s[8] Or maybe I don't.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[2]\i[6]Do we \w2HAVE\w2 to talk about him?%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[2]I don't come here to talk about him. \w8\w6\s[6]Hmph.\w6%(askagain)\e"
+		"\0\i[5](You ask him how long he have been working with Chuuya.)\n\n[half]\w8\w6\s[2]\i[6]Three years too long.%(askagain)\e"
+		"\0\i[5](You ask him how he met Chuuya.)\n\n[half]\w8\w6\s[39]He punched my face in the middle of the slums. \w8\w6\s[28]Sounds like a great guy,\n\w4\f[italic,true]right?\f[italic,false]%(askagain)\e"
+		"\0\i[5](You ask him why he and Chuuya are work partners.)\n\n[half]\w8\w6\s[40]I'm such a skillful worker I can work with any pathetic slug and produce great results.%(askagain)\e"
+		"\0\i[5](You ask him how old is Chuuya.)\n\n[half]\w8\w6\s[33]\i[6]He's around my age. \w8\w6\s[46]Except he still looks like an angsty teen that he is on the inside.%(askagain)\e"
+		"\0\i[5](You ask him if Chuuya ever visits this bar.)\n\n[half]\w8\w6\s[6]No,\w4 thankfully no.%(askagain)\e"
+		"\0\i[5](You ask him if Chuuya ever visits this bar.)\n\n[half]\w8\w6\s[1]\i[6]Even if he did, \w4\s[33]\i[6]he would be no fun. \s[38]Who likes to drink \f[italic,true]wine?\f[italic,false]%(askagain)\e"
+	}
+	if friendscore >= 300 && daysspent > 6
+	{
+		friendscore += 1
+		"\0\i[5](You ask him how many nicknames for Chuuya he has.)\n\n[half]\w8\w6\s[46]Hat rack, \w4shorty, \w4slug, \w4pipsqueak in black, \w4dog, \w4sidekick, \w4chibi, \w4simpleton, \w4C\w2E\w2O\w2 of the bottom of a wine glass,\w4 loudmouth\w5.\w5.\w5.\w8\w7\s[37] Shall I go on?%(askagain)\e"
+		"\0\i[5](You ask him if Chuuya is Gifted.)\n\n[half]\w8\w6\s[41]He might be the most dangerous Gifted of them all, on sheer level of power\w3.\w3.\w3.\w8\w6\s[47] But not to me. \w8\w8\s[21]To me, \w4he is regular pain in the ass.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[38]He has a terrible fashion sense.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[34]He rides a motorcycle up the walls, \w4\s[25]but calls \w3ME\w3 crazy when I drive a car down the road,\w[13] can you believe that? \w8\w6\s[1]\i[6]Hypocrite in a tasteless hat.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[7]As annoyed as I get when I am around him\w4.\w4.\w4.\w8\w6\s[0]\i[6] it's never boring.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[23]He's such a bad gamer, \w5\s[32]I always win when we play against each other. \w8\w6\s[25]\i[6]\f[sub,true]Except for the D\w2D\w2R but we don't talk about D\w2D\w2R.\f[sub,false]%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya's hat.)\n\n[half]\w8\w6\s[41]It's one of the old mafia traditions,\n\w4to hand down a piece of clothing to someone you recruit. \w8\w6\s[38]He just happened to get recruited by someone with a poor taste.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[1]\i[6]He's the loudest person I've ever met. \w8\w6\s[22]Maybe because he yells straight into my ears so much\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[30]He can be quite entertaining\w4.\w4.\w4.\w8\w6\s[23]\i[6] In a way that a little dog barking up a hydrant is entertaining.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[2]You know he doesn't have taste when he prefers dogs over cats. \w8\w6\s[38]He probably likes cake more than pie, \w4too.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[38]You can probably recognize him on the street if you happen to see him \w6\s[24]\i[6]- no one else wears a dumb hat unironically.%(askagain)\e"
+		"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[32]He's very, \w4extremely, \w5unbearably\w2 short. \w8\w6\s[31]Poor thing thinks he'll grow up yet\w3.\w3.\w3. \w8\w4\s[9]\i[6]Oh, I kind of pity him.\w8\w8\s[8] Or maybe I don't.%(askagain)\e"
+		"\0\i[5](You ask him how long he have been working with Chuuya.)\n\n[half]\w8\w6\s[2]\i[6]Three years too long.%(askagain)\e"
+		"\0\i[5](You ask him how he met Chuuya.)\n\n[half]\w8\w6\s[39]He punched my face in the middle of the slums. \w8\w6\s[28]Sounds like a great guy,\n\w4\f[italic,true]right?\f[italic,false]%(askagain)\e"
+		"\0\i[5](You ask him why he and Chuuya are work partners.)\n\n[half]\w8\w6\s[40]I'm such a skillful worker I can work with any pathetic slug and produce great results.%(askagain)\e"
+		"\0\i[5](You ask him how old is Chuuya.)\n\n[half]\w8\w6\s[33]\i[6]He's around my age. \w8\w6\s[46]Except he still looks like an angsty teen that he is on the inside.%(askagain)\e"
+		"\0\i[5](You ask him if Chuuya ever visits this bar.)\n\n[half]\w8\w6\s[6]No,\w4 thankfully no.%(askagain)\e"
+		"\0\i[5](You ask him if Chuuya ever visits this bar.)\n\n[half]\w8\w6\s[1]\i[6]Even if he did, \w4\s[33]\i[6]he would be no fun. \s[38]Who likes to drink \f[italic,true]wine?\f[italic,false]%(askagain)\e"
+		"\0\i[5](You ask him if Chuuya ever visits this bar.)\n\n[half]\w8\w6\s[32]\i[6]He's such a lightweight he can barely stomach two drinks without starting to sway. \s[31]He\w4-he\w3.\w3.\w3.\f[italic,false]%(askagain)\e"
+		if mafiaknown == 1 && RAND(100) < 40
+		{
+			"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[15]He didn't want to join the mafia, \w4initially. \w8\w6\s[38]But then he realized that its goals are not that different from his.%(askagain)\e"
+			"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[34]He has the gall to complain that I don't do my paperwork, \w4\s[13]but he barely has to do any! \w8\w6\s[49]\i[6]So unfair\w4.\w4.\w4.%(askagain)\e"
+			"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[6]He'd probably become the youngest executive in the Port Mafia history\w3.\w3.\w3.\w8\w6\s[0]\i[6] if I wasn't around. \w8\w6\s[1]Though, \s3\s[15]knowing what that position intells first-hand, \w4\s[30]it's still very impressive\w4.\w4.\w4.%(askagain)\e"
+			"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[41]I wonder if him trusting me with his life is the most unbelievable thing,\w5 or the most natural one\w3.\w3.\w3.%(askagain)\e"
+			"\0\i[5](You ask him about Chuuya.)\n\n[half]\w8\w6\s[41]He's been through\w4.\w4.\w4.\w5 a lot.\w8\w8\w4\s[12] Most than a lot of people,\w4 even in the mafia. \w8\w6\s[15]And yet he has rebuilt himself, \w4over and over again, \s4\s[29]carrying no regrets for himself, \w6only for others. \w8\w8\s[9]\i[6]That's truly admirable.%(askagain)\e"
+		}
+	}
+}
+//Jobjob
+Select.jobquestions
+{
+	if workyask == 0
+	{
+		workyask = 1
+		friendscore += 1
+		"\0\i[5](You ask him what his job is.)\n\n[half]\w8\w6\s[5]Do I look like someone who has a job?\n\n[half]\w8\w6\i[5](You tell him he has mentione that he's waiting for his coworkers.)\n\n[half]\w8\w6\s[7]I suppose I did.\w8\w6\s[9] Well,\w4 my place of work is quite\w4.\w4.\w4.\w5\s[32]\i[6] unique, \w4\s[30]but nothing interesting. \w8\w6\s[29]I could say that it grows more and more boring with each passing day\w3.\w3.\w3.\w8\w8\w8\w2\s[23]\i[6] But you can say I'm still hopeful to find what I seek.%(askagain)\e"
+	}
+	else
+	{
+		friendscore += 1
+		"\0\i[5](You ask him what he does at his job.)\n\n[half]\w8\w6\s[38]A little bit of this, \w4\s[30]a little bit of that\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him what he does at his job.)\n\n[half]\w8\w6\s[0]\i[6]Boss people around.%(askagain)\e"
+		"\0\i[5](You ask him what he does at his job.)\n\n[half]\w8\w6\s[2]\i[6]Way too much,\w4 that's what.%(askagain)\e"
+		"\0\i[5](You ask him how he got his job.)\n\n[half]\w8\w6\s[29]I was looking for something to do, \w4and ended up at the right place and at the right time.%(askagain)\e"
+		"\0\i[5](You ask him if his job pays well.)\n\n[half]\w8\w6\s[9]It pays plenty.\w8\w6\s[48] Enough to frequent the bar.%(askagain)\e"
+		"\0\i[5](You ask him if his gets along with his coworkers.)\n\n[half]\w8\w6\s[1]\i[6]H\w4m\w4m\w4m\w4.\w4.\w4.\w8\w8\w4\s[0] I guess you can say that.%(askagain)\e"
+		"\0\i[5](You ask him about his work hours.)\n\n[half]\w8\w6\s[36]I have a flexible work schedule. \w8\w6\s[47]I can miss an entire week and there would be no consequences.%(askagain)\e"
+		"\0\i[5](You ask him why he needs to work.)\n\n[half]\w8\w6\s[41]What else am I suppose to do to pass the time then?\w8\w6\s[48]\i[6] I can't sit in this bar all day.%(askagain)\e"
+		"\0\i[5](You ask him if he likes his job.)\n\n[half]\w8\w6\s[38]It has more interesting prospects than any other places I can think of.%(askagain)\e"
+		"\0\i[5](You ask him if he likes his job.)\n\n[half]\w8\w6\s[41]It's alright,\w4 I guess.%(askagain)\e"
+		"\0\i[5](You ask him what his job is.)\n\n[half]\w8\w6\s[32]\i[6]How about you take a guess, \w3and I tell you if you're close or not. \w8\w6\s[37]Give it a try!\w8\w4\n\n\_q\![*]\q[%(jobra),jobtab]\n\![*]\q[%(jobrn),jobtab]\e"
+		"\0\i[5](You ask him what his job is.)\n\n[half]\w8\w6\s[32]\i[6]How about you take a guess, \w3and I tell you if you're close or not. \w8\w6\s[37]Give it a try!\w8\w4\n\n\_q\![*]\q[%(jobra),jobtab]\n\![*]\q[%(jobrn),jobtab]\e"
+		"\0\i[5](You ask him what his job is.)\n\n[half]\w8\w6\s[32]\i[6]How about you take a guess, \w3and I tell you if you're close or not. \w8\w6\s[37]Give it a try!\w8\w4\n\n\_q\![*]\q[%(jobra),jobtab]\n\![*]\q[%(jobrn),jobtab]\e"
+		"\0\i[5](You ask him what his job is.)\n\n[half]\w8\w6\s[32]\i[6]How about you take a guess, \w3and I tell you if you're close or not. \w8\w6\s[37]Give it a try!\w8\w4\n\n\_q\![*]\q[%(jobra),jobtab]\n\![*]\q[%(jobrn),jobtab]\e"
+		"\0\i[5](You ask him if his job is dangerous.)\n\n[half]\w8\w6\s[0]That's an odd question. \w8\w6\s[32]Is your job dangerous?%(askagain)\e"
+		"\0\i[5](You ask him if his job is dangerous.)\n\n[half]\w8\w6\s[0]Do I look like a dangerous type? \w8\w6\s[23]\i[6]I don't know if I should be flattered or offended.%(askagain)\e"
+	}
+}
+Select.jobtab
+{
+	"\0\s[23]\i[6]Nope!\n%(askagain)\e"
+	"\0\s[23]\i[6]Missed!\n%(askagain)\e"
+	"\0\s[46]Wr\w2o\w2o\w2o\w2o\w2o\w2ng!\n%(askagain)\e"
+	"\0\s[0]\i[6]Not even close.\n%(askagain)\e"
+	"\0\s[9]\i[6]Nuh-uh. \w8\w6\s[8]Better luck next time.\n%(askagain)\e"
+	"\0\s[25]Wh\w2a\w2a\w2a\w2t?\n%(askagain)\e"
+	"\0\s[23]\i[6]Nope. \w8\w6\s[32]Maybe you'll get it next time.\n%(askagain)\e"
+	"\0\s[37]Interesting, \w3but no.\n%(askagain)\e"
+	"\0\s[31]Interesting guess, \w3\s[23]but a wrong one.\n%(askagain)\e"
+	"\0\s[26]Do I really seem like someone that would have a job like that?\n%(askagain)\e"
+}
+jobra
+{
+	"Doctor"
+	"Writer"
+	"Bartender"
+	"Office clerk"
+	"Policeman"
+	"Theme park mascot"
+	"Singer"
+	"Programmer"
+	"Newspaper salesman"
+	"Dentist"
+	"Electrician"
+	"Vacuum salesman"
+	"Actor"
+	"Maleman"
+	"Beekeeper"
+	"Chef"
+	"Bandages salesman"
+	"Journalist"
+	"Director"
+	"Mangaka"
+	"Engineer"
+}
+jobrn
+{
+	"Teacher"
+	"Baker"
+	"Artist"
+	"Drug dealer"
+	"Detective"
+	"Host"
+	"Attourney"
+	"Dancer"
+	"Mayor"
+	"Veterinarian"
+	"Nurse"
+	"Scientist"
+	"Bank worker"
+	"Historian"
+	"Newspaper boy"
+	"Milkman"
+	"Barista"
+	"Chemist"
+	"Cleaner"
+	"Stand-up comedian"
+	"Gardener"
+}
+//MAFIA! BOO!
+Select.mafiaquestions
+{
+		friendscore += 1
+		"\0\i[5](You ask him what he does at his job.)\n\n[half]\w8\w6\s[33]As an executive, \w4\s[38]I do a lot of networking, \w4important missions, \w4handle precious documents\w4.\w4.\w4.\w8\w8\s[2]\i[6] Mostly boring work.%(askagain)\e"
+		"\0\i[5](You ask him what he does at his job.)\n\n[half]\w8\w6\s[32]\i[6]I'm pretty good at torture, \w3you know? \w8\w6\s[23]\i[6]People don't last five minutes when I am the one interrogating them, \w3he\w2-he\w4.\w4.\w4.!%(askagain)\e"
+		"\0\i[5](You ask him if everyone takes orders from someone so young.)\n\n[half]\w8\w6\s[38]Those who don't know how to recognize authority don't last long in the mafia.%(askagain)\e"
+		"\0\i[5](You ask him how often he witnesses death.)\n\n[half]\w8\w6\s[1]Every other day. \w8\w6\s[33]You might find that prospect morbid,\w5\s[6] but it's not a bother to me.%(askagain)\e"
+		"\0\i[5](You ask him if he carries a gun.)\n\n[half]\w8\w6\s[5]Scared?\w8\w6\s[32]\i[6] No, \w4I don't.\w8\w6\s[0] At least not right now.%(askagain)\e"
+		"\0\i[5](You ask him if his job pays well.)\n\n[half]\w8\w6\s[35]\i[6]I don't really watch my expenses,\w4 so I wouldn't know,\w4 really.\w8\w6\s[25]\i[6] I'm not the slug, \w5\s[38]I don't throw money at everything that claims to be better because it's expensive.%(askagain)\e"
+		"\0\i[5](You ask him if he gets along with his coworkers.)\n\n[half]\w8\w6\s[30]I am well respected, \w4\s[38]but most of it is just fear.\w8\w6\s[23] And those who don't fear me wish me dead.%(askagain)\e"
+		"\0\i[5](You ask him about his work hours.)\n\n[half]\w8\w6\s[39]I may have a high position, \w4\s[32]but it doesn't mean I have to spend all my time working.\w8\w6\s[23] So if I want to do something,\w4\i[6] I'm quite free to do so.%(askagain)\e"
+		"\0\i[5](You ask him why he needs to work.)\n\n[half]\w8\w6\s[9]\i[6]What else am I suppose to do to pass the time then?\w8\w6\s[48] I can't sit in this bar all day.%(askagain)\e"
+		"\0\i[5](You ask him why he needs to work.)\n\n[half]\w8\w6\s[6]I don't need to.\w8\w6\s[1] You can say I choose to. \w8\w6\s[33]\i[6]If I am to stay alive,\w4\s[15] I must be spending my days somehow.%(askagain)\e"
+		"\0\i[5](You ask him if he likes his job.)\n\n[half]\w8\w6\s[29]To me,\w3\s[38] it's just like any other job.\w8\w6\s[41] All that's different is that I am closer to gleaning the true nature of humans.%(askagain)\e"
+		"\0\i[5](You ask him if he likes his job.)\n\n[half]\w8\w6\s[41]It's about the most interesting job I can imagine myself having. \w8\w6\s[6]What else is there to see?%(askagain)\e"
+		"\0\i[5](You ask him if his job is dangerous.)\n\n[half]\w8\w6\s[38]If I am still alive after all this time, \w4\s[23]I'd say it's not dangerous enough.%(askagain)\e"
+		"\0\i[5](You ask him how long he had worked in the mafia.)\n\n[half]\w8\w6\s[41]Four years. \w8\w6I've been an executive for about two years now.%(askagain)\e"
+		"\0\i[5](You ask him if his job is dangerous.)\n\n[half]\w8\w6\s[5]Are you w\w2o\w2o\w2o\w2r\w2rying about me? \w8\w6\s[46]That's so sweet. \w8\w6\s[32]But no need \w4- \s[23]I am an executive, \w8\w6\s[31]I know how to do my job well.%(askagain)\e"
+		"\0\i[5](You ask him how he became an executive.)\n\n[half]\w8\w6\s[47]My outstanding skills and qualities as well as a plethora of recommendations made for an impressive resume.%(askagain)\e"
+		"\0\i[5](You ask him about other executives.)\n\n[half]\w8\w6\s[22]Ace is deplorable human being even by my standarts. \w8\w6\s[6]And yet, \w4\s[15]we're similar, \w4in a way.\w8\w6\s[41] We both can collar people while they believe they've done it by their own hands.%(askagain)\e"
+		"\0\i[5](You ask him about other executives.)\n\n[half]\w8\w6\s[0]Kouyou is probably the nicest one to be around. \w8\w6\s[39]She may have more weaknesses than any of the other executives,\w4\s[31] but good luck exploiting them.%(askagain)\e"
+		"\0\i[5](You ask him about other executives.)\n\n[half]\w8\w6\s[21]Why are we talking about Chuuya again?\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him about other executives.)\n\n[half]\w8\w6\s[38]There's one who shall not be named\w3.\w3.\w3.\w8\w6\s[41]\nI hope our paths won't cross again.%(askagain)\e"
+		"\0\i[5](You ask him if he ever wanted the position of an executive.)\n\n[half]\w8\w6\s[3]\i[6]It makes no difference to me,\w3 what position I hold in the mafia.\w8\w6\s[38] As long as I can do what I please,\n\w3\s[15]that's all that matters.%(askagain)\e"
+		"\0\i[5](You ask him if he has any enemies.)\n\n[half]\w8\w6\s[0]Oh, \w3\i[6]certainly. \w8\w6\s[32]A \w3LOT\w3 of people wish me dead, \w4\s[23]\i[6]some even more fiercely that myself.\w8\w6\s[16] It doesn't bother me though\w4\s[39] - I barely have anything to lose.%(askagain)\e"
+		"\0\i[5](You ask him about the Port Mafia Boss.)\n\n[half]\w8\w6\s[41]I do hold great respect for Mori. \w8\w4He managed to take what was important to him and shape it with his own hands,\w4 even under the ire of the mafia of the past\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him about the Port Mafia Boss.)\n\n[half]\w8\w6\s[43]\i[6]Mori likes to complain that I am getting more lousy with my work.\w8\w6\s[38] The mafia already practically runs the city, \w4\s[49]\i[6]I can have another day off.%(askagain)\e"
+		"\0\i[5](You ask him about the Port Mafia Boss.)\n\n[half]\w8\w6\s[21]Don't talk to him about children.%(askagain)\e"
+}
+//bandages
+Select.awkwardquestions
+{
+	if friendscore >= 70 && friendscore < 300  && dazaiage == 1 && daysspent > 2
+	{
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[14]What, \w4did they slip somewhere?%(askagain)\e"
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[0]\i[6]It's a preemptive measure in case I get hurt.%(askagain)\e"
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[32]\i[6]Bandages are always in style.%(askagain)\e"
+		"\0\i[5](You ask him about the bandages around his neck.)\n\n[half]\w8\w6\s[38]They're the same brand as the rest of them.%(askagain)\e"
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[9]\i[6]I'm very clumsy. \w8\w6\s[46]\f[italic,true]Extremely\f[italic,false] clumsy.%(askagain)\e"
+		"\0\i[5](You ask him if he is hurt.)\n\n[half]\w8\w6\s[39]Why else would I wear bandages?%(askagain)\e"
+		"\0\i[5](You ask him if he feels hot in all these bandages.)\n\n[half]\w8\w6\s[0]Not, not at all.\w8\w6\s[32]\i[6] My hands are cold,\w4 in fact.%(askagain)\e"
+		"\0\i[5](You ask him if he feels hot in all these bandages.)\n\n[half]\w8\w6\s[29]I'm fine.\w8\w6\s[39] I even took my coat off.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[23]I got an eye right there.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[12]One eye is enough for me.\w8\w6\s[41] I can already see everything before me\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[46]If it bothers you,\w3\s[40] you're welcome to sit by my left side.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[3]Hm? \w8\w6Why would you think that?%(askagain)\e"
+		"\0\i[5](You ask him how much time it took to bandage himself.)\n\n[half]\w8\w6\s[3]Why do you ask? \w8\w6\s[38]I don't have that many\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him what happened to his cheek.)\n\n[half]\w8\w6\s[6]Nothing serious.%(askagain)\e"
+		"\0\i[5](You ask him what happened to his cheek.\w8\w6\s[6]\i[5] He turns away and pretends like he didn't hear you.)\s[6]%(askagain)\e"
+		"\0\i[5](You ask him if he's just really likes bandages.)\n\n[half]\w8\w6\s[46]N\w2o\w2o\w2o\w2w you start to get it!%(askagain)\e"
+	}
+	elseif friendscore >= 300 && daysspent > 4
+	{
+		friendscore += 1
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[14]What, \w4did they slip somewhere?%(askagain)\e"
+		"\0\i[5](You ask him if he's just really likes bandages.)\n\n[half]\w8\w6\s[46]N\w2o\w2o\w2o\w2w you start to get it!%(askagain)\e"
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[0]\i[6]It's a preemptive measure in case I get hurt.%(askagain)\e"
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[32]\i[6]Bandages are always in style.%(askagain)\e"
+		"\0\i[5](You ask him about the bandages around his neck.)\n\n[half]\w8\w6\s[38]They're the same brand as the rest of them.%(askagain)\e"
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[9]\i[6]I'm very clumsy. \w8\w6\s[46]\f[italic,true]Extremely\f[italic,false] clumsy.%(askagain)\e"
+		"\0\i[5](You ask him if he is hurt.)\n\n[half]\w8\w6\s[39]Why else would I wear bandages?%(askagain)\e"
+		"\0\i[5](You ask him if he is hurt.)\n\n[half]\w8\w6\s[29].\w8.\w8. \w8\w8\w6No.\w8\w6%(askagain)\e"
+		"\0\i[5](You ask him if he is hiding something under his bandages.)\n\n[half]\w8\w6\s[5]What, \w4\s[32]you think I might have some embarrassing tattoo? \w8\w6\s[31]Perhaps\w4.\w4.\w4.%(askagain)\e"
+		"\0\i[5](You ask him if he feels hot in all these bandages.)\n\n[half]\w8\w6\s[0]Not, not at all.\w8\w6\s[32]\i[6] My hands are cold,\w4 in fact.%(askagain)\e"
+		"\0\i[5](You ask him if he feels hot in all these bandages.)\n\n[half]\w8\w6\s[29]I'm fine.\w8\w6\s[39] I even took my coat off.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[23]I got an eye right there.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[12]One eye is enough for me.\w8\w6\s[41] I can already see everything before me\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[46]If it bothers you,\w3\s[40] you're welcome to sit by my left side.%(askagain)\e"
+		"\0\i[5](You ask him if he's just really likes bandages.)\n\n[half]\w8\w6\s[46]N\w2o\w2o\w2o\w2w you start to get it!%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[3]Hm? \w8\w6Why would you think that?%(askagain)\e"
+		"\0\i[5](You ask him how much time it took to bandage himself.)\n\n[half]\w8\w6\s[3]Why do you ask? \w8\w6\s[38]I don't have that many\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him what happened to his cheek.)\n\n[half]\w8\w6\s[6]Nothing serious.%(askagain)\e"
+		"\0\i[5](You ask him what happened to his cheek.)\n\n[half]\w8\w8\s[2]\i[6]\w8\w8\w8\f[sub,true].\w8.\w8.\w8\w6I cut myself shaving.\f[sub,false]%(askagain)\e"	
+		if mafiaknown == 1 && RAND(100) < 20
+		{
+			"\0\i[5](You ask him if he got hurt on the job.)\n\n[half]\w8\w6\s[6]That happens sometimes, \w4but it's rarely something serious.%(askagain)\e"
+			"\0\i[5](You ask him if he got hurt on the job.)\n\n[half]\w8\w6\s[0]\i[6]It would make sense,\w3 wouldn't it\w3\s[30] - the world of the mafia is very dangerous.%(askagain)\e"
+		}
+	}
+	else
+	{
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[14]What, \w4did they slip somewhere?%(askagain)\e"
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[0]\i[6]It's a preemptive measure in case I get hurt.%(askagain)\e"
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[32]\i[6]Bandages are always in style.%(askagain)\e"
+		"\0\i[5](You ask him about the bandages around his neck.)\n\n[half]\w8\w6\s[38]They're the same brand as the rest of them.%(askagain)\e"
+		"\0\i[5](You ask him about his bandages.)\n\n[half]\w8\w6\s[9]\i[6]I'm very clumsy. \w8\w6\s[46]\f[italic,true]Extremely\f[italic,false] clumsy.%(askagain)\e"
+		"\0\i[5](You ask him if he is hurt.)\n\n[half]\w8\w6\s[39]Why else would I wear bandages?%(askagain)\e"
+		"\0\i[5](You ask him if he feels hot in all these bandages.)\n\n[half]\w8\w6\s[0]Not, not at all.\w8\w6\s[32]\i[6] My hands are cold,\w4 in fact.%(askagain)\e"
+		"\0\i[5](You ask him if he feels hot in all these bandages.)\n\n[half]\w8\w6\s[29]I'm fine.\w8\w6\s[39] I even took my coat off.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[23]I got an eye right there.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[12]One eye is enough for me.\w8\w6\s[41] I can already see everything before me\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[46]If it bothers you,\w3\s[40] you're welcome to sit by my left side.%(askagain)\e"
+		"\0\i[5](You ask him if something happened to his eye.)\n\n[half]\w8\w6\s[3]Hm? \w8\w6Why would you think that?%(askagain)\e"
+		"\0\i[5](You ask him how much time it took to bandage himself.)\n\n[half]\w8\w6\s[3]Why do you ask? \w8\w6\s[38]I don't have that many\w3.\w3.\w3.%(askagain)\e"
+		"\0\i[5](You ask him what happened to his cheek.)\n\n[half]\w8\w6\s[6]Nothing serious.%(askagain)\e"
+		"\0\i[5](You ask him what happened to his cheek.\w8\w6\s[6]\i[5] He turns away and pretends like he didn't hear you.)\s[6]%(askagain)\e"
+	}
+	
+}
+
+//Randomizer town
+Select.randomquestionsanswers1
+{
+	know1 = 1
+	"\0\i[5](You ask him about Atsushi.)\n\n[half]\w8\w6\s[42]Who?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Atsushi.)\n\n[half]\w8\w6\s[14]Hm? \w8\w6I don't know anyone by that name.%(askagain)\e"
+	"\0\i[5](You ask him about Atsushi. \w8\w6\s[14]\i[5]He looks at you in confusion.)\s[14]%(askagain)\e"
+	"\0\i[5](You ask him about Atsushi.)\n\n[half]\w8\w6\s[26]Huh?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Atsushi.)\n\n[half]\w8\w6\s[14]Atsushi?\w3.\w3. \w8\w6\s[14]Who's that?%(askagain)\e"
+}
+Select.randomquestionsanswers2
+{
+	know2 = 1
+	"\0\i[5](You ask him about Kunikida.)\n\n[half]\w8\w6\s[42]Who?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Kunikida.)\n\n[half]\w8\w6\s[14]Hm? \w8\w6I don't know anyone by that name.%(askagain)\e"
+	"\0\i[5](You ask him about Kunikida. \w8\w6\s[14]\i[5]He looks at you in confusion.)\s[14]%(askagain)\e"
+	"\0\i[5](You ask him about Kunikida.)\n\n[half]\w8\w6\s[26]Huh?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Kunikida.)\n\n[half]\w8\w6\s[14]Kunikida?\w3.\w3. \w8\w6\s[14]Who's that?%(askagain)\e"
+}
+Select.randomquestionsanswers3
+{
+	know3 = 1
+	"\0\i[5](You ask him about Yosano.)\n\n[half]\w8\w6\s[42]Who?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Yosano.)\n\n[half]\w8\w6\s[14]Hm? \w8\w6I don't know anyone by that name.%(askagain)\e"
+	"\0\i[5](You ask him about Yosano. \w8\w6\s[14]\i[5]He looks at you in confusion.)\s[14]%(askagain)\e"
+	"\0\i[5](You ask him about Yosano.)\n\n[half]\w8\w6\s[26]Huh?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Yosano.)\n\n[half]\w8\w6\s[14]Yosano?\w3.\w3. \w8\w6\s[14]Who's that?%(askagain)\e"
+}
+Select.randomquestionsanswers4
+{
+	know4 = 1
+	"\0\i[5](You ask him about Fukuzawa.)\n\n[half]\w8\w6\s[42]Who?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Fukuzawa.)\n\n[half]\w8\w6\s[14]Hm? \w8\w6I don't know anyone by that name.%(askagain)\e"
+	"\0\i[5](You ask him about Fukuzawa. \w8\w6\s[14]\i[5]He looks at you in confusion.)\s[14]%(askagain)\e"
+	"\0\i[5](You ask him about Fukuzawa.)\n\n[half]\w8\w6\s[26]Huh?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Fukuzawa.)\n\n[half]\w8\w6\s[14]Fukuzawa?\w3.\w3. \w8\w6\s[14]Who's that?%(askagain)\e"
+}
+Select.randomquestionsanswers5
+{
+	know5 = 1
+	"\0\i[5](You ask him about Ranpo.)\n\n[half]\w8\w6\s[42]Who?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Ranpo.)\n\n[half]\w8\w6\s[14]Hm? \w8\w6I don't know anyone by that name.%(askagain)\e"
+	"\0\i[5](You ask him about Ranpo. \w8\w6\s[14]\i[5]He looks at you in confusion.)\s[14]%(askagain)\e"
+	"\0\i[5](You ask him about Ranpo.)\n\n[half]\w8\w6\s[26]Huh?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Ranpo.)\n\n[half]\w8\w6\s[14]Ranpo?\w3.\w3. \w8\w6\s[14]Who's that?%(askagain)\e"
+}
+Select.randomquestionsanswers6
+{
+	know6 = 1
+	"\0\i[5](You ask him about Kenji.)\n\n[half]\w8\w6\s[42]Who?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Kenji.)\n\n[half]\w8\w6\s[14]Hm? \w8\w6I don't know anyone by that name.%(askagain)\e"
+	"\0\i[5](You ask him about Kenji. \w8\w6\s[14]\i[5]He looks at you in confusion.)\s[14]%(askagain)\e"
+	"\0\i[5](You ask him about Kenji.)\n\n[half]\w8\w6\s[26]Huh?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Kenji.)\n\n[half]\w8\w6\s[14]Kenji?\w3.\w3. \w8\w6\s[14]Who's that?%(askagain)\e"
+}
+Select.randomquestionsanswers7
+{
+	know7 = 1
+	"\0\i[5](You ask him about Tanizaki.)\n\n[half]\w8\w6\s[42]Who?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Tanizaki.)\n\n[half]\w8\w6\s[14]Hm? \w8\w6I don't know anyone by that name.%(askagain)\e"
+	"\0\i[5](You ask him about Tanizaki. \w8\w6\s[14]\i[5]He looks at you in confusion.)\s[14]%(askagain)\e"
+	"\0\i[5](You ask him about Tanizaki.)\n\n[half]\w8\w6\s[26]Huh?\w3.\w3.%(askagain)\e"
+	"\0\i[5](You ask him about Tanizaki.)\n\n[half]\w8\w6\s[14]Tanizaki?\w3.\w3. \w8\w6\s[14]Who's that?%(askagain)\e"
+}
+
+
+
+//Leave this alone
+OnLastTalk 
+{
+"%(lastTalk)\e"
+}
+
+//This is figuring out what day of the week it is. Leave it alone.
+GetWeekDay
+{
+	if weekday == 0
+	{"Sun"}
+	elseif weekday == 1
+	{"Mon"}
+	elseif weekday == 2
+	{"Tue"}
+	elseif weekday == 3
+	{"Wed"}
+	elseif weekday == 4
+	{"Thu"}
+	elseif weekday == 5
+	{"Fri"}
+	else
+	{"Sat"}
+}
+
+//This is finding out whether it's AM or PM. Leave it alone.
+GetAP
+{
+ 	if hour >= 0 && hour <= 11
+ 		{"AM"}
+ 	else
+ 		{"PM"}
+}
+
+nowhour
+{
+	if hour12 == 0; "1"
+	else; "%(hour12)"
+}
+
+nowmin
+{
+	if minute >= 0 && minute <=9; "0%(minute)"
+	else; "%(minute)"
+}
+
+
+//If someone selects an option linked to BACKTOMENU, it will go back to MenuRun.
+//Advanced users, note that this is formatted as Select.linkedfunction? Remember how it went \q[Displayed Name,linkedfunction] above? When a user clicks an option that doesn't begin with On, they'll be linked to Select.linkedfunction. Pay close attention as we go through and you'll see this in action.
+
+Select.BACKTOMENU
+	{
+		MenuRun
+	}
+
+//If someone selects configmenu, this will lead to TalkConfig.
+Select.configmenu
+	{
+		TalkConfig
+	}
+
+
+
+//--TalkConfig
+//This menu allows the user to change their name and other information, as well as put in their birthday and change how often the ghost speaks. You can restructure how this looks if you want, but it's perfectly functional as is. You can of course change the dialogue though if you like.
+
+TalkConfig
+{
+	"\0\b[2]\_q\" 
+	//This bit of dialogue sets up a large balloon and a quick session, like above, so all the text will appear immediately. The rest is formatted to display the information and options to change it. I wouldn't touch any of it if you don't know what you're doing.
+	//I'll briefly explain the font tags I used here. \f[bold,1] turns bold on, \f[bold,0] turns it off, not unlike a <b> tag. \f[sup,1] turns superscript on (making it tiny and above the text) and \f[sup,0] turns it off. I touch on these tags in the walkthrough on SakuraScript.
+	--
+	if yourname = 0
+	{
+		"f[bold,1]Your name:\f[bold,0] He doesn't know your name...\n\n"
+	}
+	else
+	{
+		"f[bold,1]Your name:\f[bold,0] %(username) \f[sup,1](\q[Change it?,TEACHNAME])\f[sup,0]\n\n"
+	}
+	--
+	if dazaipat > 0 && friendscore < 40
+	{
+		"You tried(?) to pet his head %(dazaipat) times.\n\n"
+	}
+	elseif friendscore >= 40
+	{
+		"You pet his head %(dazaipat) times.\n\n"
+	}
+	//else
+	//{
+	//	""
+	//}
+	--
+	if friendscore > 50 && friendscore <= 100
+	{
+		"He considers you a fine distraction.\n\n"
+		"He doesn't mind your presence.\n\n"
+		"He will probably begrudgingly accept affection.\n\n"
+	}
+	elseif friendscore > 100 && friendscore <= 300
+	{
+		"He considers you a nice distraction.\n\n"
+		"He likes your presence.\n\n"
+		"He trusts you with some information about himself.\n\n"
+		"He will probably accept affection.\n\n"
+	}
+	elseif friendscore > 300 && friendscore <= 700
+	{
+		"He likes talking to you.\n\n"
+		"He enjoys your presence.\n\n"
+		"He trusts you with information about himself.\n\n"
+		"He likes your attention.\n\n"
+		"He wonders why you are so nice to him.\n\n"
+		"He considers you an acquaintance.\n\n"
+	}
+	elseif friendscore > 700
+	{
+		"He likes talking to you.\n\n"
+		"He enjoys your presence.\n\n"
+		"He considers you a friend.\n\n"
+		"He's afraid one day you'll stop coming here.\n\n"
+		"He tells his friends about you, too.\n\n"
+		"He trusts you with information about himself.\n\n"
+		"He likes your attention.\n\n"
+		"He wonders why you are so nice to him.\n\n"
+		"He comes here to spend time with you.\n\n"
+	}
+	else
+	{
+		"He considers you a stranger.\n\n"
+		"He thinks you're just another patron of the bar.\n\n"
+		"He doesn't think much about you.\n\n"
+	}
+	--
+	if dazaimood <= -5
+	{
+		"He seems to be in a bad mood.\n\n"
+	}
+	elseif dazainame == 1 && RAND(100) < 15
+	{
+		"Dazai Osamu.\n\n"
+		"Osamu Dazai.\n\n"
+		"He has an odd name.\n\n"
+	}
+	elseif chuuyaknown == 1 && RAND(100) < 15
+	{
+		"He doesn't seem to like Chuuya much.\n\n"
+		"He has at least three(?) friends.\n\n"
+	}
+	elseif mafiaknown == 1 && RAND(100) < 15
+	{
+		"He's a mafioso.\n\n"
+		"A mafioso.\n\n"
+		"He's one of the five Port Mafia mafia executives.\n\n"
+		"Port Mafia.\n\n"
+		"The Demon Prodigy.\n\n"
+		"Danger level: high.\n\n"
+		"No Longer Human.\n\n"
+		"The youngest executive in the Port Mafia history.\n\n"
+	}
+	elseif akutagawasonemomenttoshine == 1 && RAND(100) < 4
+	{
+		"Did he really only mention Akutagawa once?..\n\n"
+	}
+	elseif dazaipat > 100 && RAND(100) < 15
+	{
+		"He doesn't know why you pat him on the head.\n\n"
+		"He likes to be patted on the head.\n\n"
+		"He actually quite enjoys your pats.\n\n"
+		"He's too self-concious to ask you for more headpats.\n\n"
+	}
+	elseif dazaiage == 1 && RAND(100) < 15
+	{
+		"He's 18 years old.\n\n"
+		"Apparently, he's only 18 years old.\n\n"
+	}
+	elseif friendscore > 500 && RAND(100) < 4
+	{
+		"He wants to ask your phone number but doesn't know how."
+	}
+	else
+	{
+		"He's wearing a lot of black.\n\n"
+		"He's drinking whiskey.\n\n"
+		"He's very bandaged.\n\n"
+		"He's wearing a suit.\n\n"
+		"He's more tired than he looks.\n\n"
+		"He seems quite young.\n\n"
+		"There's something dangerous about him.\n\n"
+		"He's trying to be frienly.\n\n"
+		"Another client in this bar.\n\n"
+		"He reminds you of a black cat.\n\n"
+		"He comes to this bar a lot.\n\n"
+		"How much does he drink?..\n\n"
+		"He seems to hold his alcohol well.\n\n"
+		"He likes to talk about suicide.\n\n"
+		"He's quite mysterious.\n\n"
+		"He has at least two friends.\n\n"
+		"He has a tab in this bar.\n\n"
+		"He smells like leather and gun powder.\n\n"
+		"He is waiting for his companions.\n\n"
+		"He has a flip phone.\n\n"
+		"He's very brooding.\n\n"
+		"He's in his Dark Era.\n\n"
+		"A stray.\n\n"
+		"He has amber-colored eyes.\n\n"
+		"He didn't brush his hair today.\n\n"
+	}
+	//--
+	//"\f[bold,1]Your pronouns:\f[bold,0] %(heshe)/%(himher)/%(hisher) \f[sup,1](\q[Change them?,TEACHPRONOUN])\f[sup,0]\n"
+	//--
+	//"\f[bold,1]Your birthday:\f[bold,0] %(birthdayprint) \f[sup,1](\q[Change it?,TEACHBDAY])\f[sup,0]\n\n"timecheckio == 1
+	--
+	"\f[bold,1]Talk Rate:\f[bold,0] - every %(talktime) \f[sup,1](\q[Change it,talkinter])\f[sup,0]\n\n\n"
+	--
+	if timecheckio == 1
+	{
+		"Do you want him to announce the hour? Right now you do.\f[sup,1](\q[Change it,timechangioyes])\f[sup,0]\n\n\n"
+	}
+	else
+	{
+		"Do you want him to announce the hour? Right now you don't.\f[sup,1](\q[Change it,timechangiono])\f[sup,0]\n\n\n"
+	}
+	--
+	"\f[sup,1](Do you wish to \q[reset?,resetti])\f[sup,0]\n\n"
+	//--		
+		//{
+		//"\![*]Enable Uninstall? (NOW : %(deleteshitai))\n\q[ON,deleteon] \q[OFF,deleteoff]\n\n[half]\n"
+		//}
+	--
+	"\![*]\q[Back to the menu,BACKTOMENU]\e"
+}
+
+Select.timechangioyes
+{
+	timecheckio = 0
+	"\0\s[6]I guess I should stop staring at the clock. \w8\w6The time keeps moving anyway\w3.\w3.\w3.\e"
+}
+Select.timechangiono
+{
+	timecheckio = 1
+	"\0\s[41]I wonder how much longer I'll have to wait today\w4.\w4.\w4.\w8\w6\s[48] At least I have you to wait with.\e"
+}
+//This and the next few set up the pronouns, as you can see by the linkedfunction names. You can replace "\0\s[0]What pronouns do you want?" with your own dialogue if you prefer, but leave the rest of it alone.
+
+Select.TEACHPRONOUN
+{
+	"\0\s[0]What pronouns do you want?\w5\n\n[half]\_q/
+		\![*]\q[He-His-Him,choicemasc]\n/
+		\![*]\q[She-Her-Her,choicefem]\n/	
+		\![*]\q[They-Their-Them,choiceneither]\e"
+}
+
+Select.choicemasc
+{
+	presuffix = "masculine"
+	himher = "him"
+	heshe = "he"
+	hisher = "his"
+	hesshes = "he's"
+	--
+	"\0\s[0]Okay.\e"
+	//Leave the part above the double dashes alone. You can replace the snip of dialogue however with whatever you like.
+}
+
+Select.choicefem
+{
+	presuffix = "feminine"
+	himher = "her"
+	heshe = "she"
+	hisher = "her"
+	hesshes = "she's"
+	--
+	"\0\s[0]Okay.\e"
+	//as above, you can also replace this dialogue.
+}
+
+Select.choiceneither
+{
+	presuffix = "undefine"
+	himher = "them"
+	heshe = "they"
+	hisher = "their"
+	hesshes = "they're"
+	--
+	"\0\s[0]Okay.\e"
+	//and this one.
+}
+
+//Here are some examples of these envelopes in use.
+//"%(heshe) left that there."
+//"%(hisher) work is really cool."
+//"I'll ask %(himher) later."
+//"%(hesshes) really good at it."
+
+
+//These two options toggle whether or not you can delete your ghost. Leave them alone.
+
+Select.deleteon
+{
+	deleteshitai = "ON"
+	TalkConfig
+}
+
+Select.deleteoff
+{
+	deleteshitai = "OFF"
+	TalkConfig
+}
+
+
+//This next set of functions handles inputting the user's birthday.
+
+Select.TEACHBDAY
+	{	
+		"\0\s[0]What month were you born? \w8Name or number is fine.\![open,inputbox,OnUserBornMonth,-1]\e"
+		
+		//You can replace the dialogue up to the \![open,inputbox,OnUserBornMonth,-1] tag, leave that alone. You'll need the input box to get the information.
+		
+		//*********************Advanced User Info*******************************
+		//I also touched on this in bootend.dic and explained it in the walkthrough page on coding, but I'll also go into it here. I'm going to break down the tag there at the end of the sentence so you know what it's doing. Basically, \! means a function is going to happen, open tells it to open something, inputbox tells it to open an input box, and OnUserBornMonth is the function the input box will be linked to, which is just below here. -1 means the input box should not time out. If you want to add input boxes to some new function for whatever reason, you should follow this basic format.
+		//On a related note, you can raise any function at the end of any piece of dialogue by using this format - \![raise,InsertFunctionName]. This can be handy for testing things if the function is hard to get to run otherwise.
+		//***********************************************************************
+	}
+
+//--OnUserBornMonth
+//This takes the value that the user put into the input box above and evaluates it. Most of this you won't have to touch, but I'll explain what it's doing anyway. I'll point out where you can change the dialogue.
+
+OnUserBornMonth
+{
+	_tempmonth = TOSTR(reference0) //this stores what the user put in as a variable called _tempmonth
+	_tempmonth = TOLOWER(_tempmonth) //changes it to lowercase
+	
+	//this is attaching the right value to the input from the user
+	if _tempmonth == "january" || _tempmonth == "1" {bornmonth = 1; bornmonthprint = "January"}
+	elseif _tempmonth == "february" || _tempmonth == "2" {bornmonth = 2; bornmonthprint = "February"}
+	elseif _tempmonth == "march" || _tempmonth == "3" {bornmonth = 3; bornmonthprint = "March"}
+	elseif _tempmonth == "april" || _tempmonth == "4" {bornmonth = 4; bornmonthprint = "April"}
+	elseif _tempmonth == "may" || _tempmonth == "5" {bornmonth = 5; bornmonthprint = "May"}
+	elseif _tempmonth == "june" || _tempmonth == "6" {bornmonth = 6; bornmonthprint = "June"}
+	elseif _tempmonth == "july" || _tempmonth == "7" {bornmonth = 7; bornmonthprint = "July"}
+	elseif _tempmonth == "august" || _tempmonth == "8" {bornmonth = 8; bornmonthprint = "August"}
+	elseif _tempmonth == "september" || _tempmonth == "9" {bornmonth = 9; bornmonthprint = "September"}
+	elseif _tempmonth == "october" || _tempmonth == "10" {bornmonth = 10; bornmonthprint = "October"}
+	elseif _tempmonth == "november" || _tempmonth == "11" {bornmonth = 11; bornmonthprint = "November"}
+	elseif _tempmonth == "december" || _tempmonth == "12" {bornmonth = 12; bornmonthprint = "December"}
+	
+	else //if the month isn't a valid month, like 32 or something.
+	{
+			"\0\s[0]That's not a valid month. Try again."
+			--
+			"\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\e"
+			
+			//You can replace this dialogue in the first line. You need to leave the tag for the input box so they can put in a correct month. That last tag there for ![set,balloontimeout,-1] makes it so the input box won't time out if the user takes too long.
+	}
+	--
+	//If it's a valid month
+	
+	"\0\s[0]So you were born in %(bornmonthprint).\n\w8What day was it?"
+	--
+	"\![open,inputbox,OnUserBornDay,-1]\![set,balloontimeout,-1]\e"
+	
+	//Here you can see the use of a bornmonthprint envelope to show the user what month they put in. Notice that it opens an inputbox at the end the same way the one above did. You can replace the dialogue in the first line just as with above.
+}
+
+//This adds an appropriate suffix to the number for the day. No need to mess with this.
+
+Printday
+{
+	if bornday == 1 || bornday == 21 || bornday == 31
+	{	"%(bornday)st"	}
+	elseif bornday == 2 || bornday == 22
+	{	"%(bornday)nd"	}
+	elseif bornday == 3 || bornday == 23
+	{	"%(bornday)rd"	}
+	else
+	{	"%(bornday)th"	}
+}	
+
+//--OnUserBornDay
+//This is much like the above function OnUserBornMonth. It'll take the value the user put in for the day and analyze it. Again, there'll be comments explaining how it works, but all you really need to do is change the dialogue appropriately. I'll point out where you can add new dates to check for.
+
+OnUserBornDay
+{
+	_tempday = reference0 //storing the input in _tempday
+	_tempday = TOLOWER(_tempday) //changes it to lowercase
+	_tempday = REPLACE(_tempday,"st","") //if the user types something like 2nd, 3rd, etc, this will make it just the number. It'll just add the suffix back later on the one that actually shows.
+	_tempday = REPLACE(_tempday,"nd","")
+	_tempday = REPLACE(_tempday,"rd","")
+	_tempday = REPLACE(_tempday,"th","")
+	_tempday = TOINT(_tempday) //Converts it to an integer
+	
+	if ((bornmonth == 1 || bornmonth == 3 || bornmonth == 5 || bornmonth == 7 || bornmonth == 8 || bornmonth == 10 || bornmonth == 12) && _tempday >= 1 && _tempday <= 31) || (bornmonth == 2 && _tempday >= 1 && _tempday <= 29) || ((bornmonth == 4 || bornmonth == 6 || bornmonth == 9 || bornmonth == 11) && _tempday >= 1 && _tempday <= 30) //This ugly function checks if the day falls into a valid range. If it does, we set some variables and continue down.
+	{
+		bornday = _tempday
+		borndayprint = Printday
+		userbirthday = "%(bornmonth)month %(bornday)day"
+		birthdayprint = "%(bornmonthprint) %(borndayprint)"
+		
+		"%(birthchecked)"
+		//Mostly defining envelopes and values in here. No need to touch any of this! Eagle-eyed readers will notice the new envelope birthchecked on its own line like a tiny king. We'll get to that momentarily, but pay it no mind for now.
+	}
+	else //If the day isn't valid, like the 10046th or something, this will open the input box again and have a \e so the dialogue below doesn't play. You can replace the dialogue in the first line here.
+	{
+		"\0\s[0]That's not a valid day. Try again."
+		--
+		"\![open,inputbox,OnUserBornDay,-1]\e"
+	}	
+}
+
+//--birthchecked
+//This is the new envelope you saw me point out above. As you can see here, you can actually call dialogue in a function with an envelope, even when it has if and else statements like here! Which can be pretty handy. Again, more on envelopes in word.dic. Creative ghostmakers can find handy ways to exploit this, I'm sure.
+
+birthchecked
+{
+	if userbirthday == dayslot //if today is the user's birthday
+		{
+			"\0\s[0]It's the user's birthday.\w8\1\s[10]Happy birthday, %(username).\e"
+			//replace this dialogue with whatever you like
+		}
+	elseif userbirthday == "12month 25day"
+		{
+			"\0\s[0]The user was born on Christmas.\w8\1\s[10]Happy birthday, %(username). \w5\s[15]AND JESUS!\w8\0\s[9]\n\n[half]We're supposed to be a blank template, knock it off before we get in trouble.\e"
+			//As you can see, you can set up an elseif statement to check if the user's birthday is any day you want! More on elseif statements in bootend.dic. In this case, there's specialized dialogue if the user was born on Christmas. You can replace this with whatever you like, or change the date you're checking as well, like to one of your character's birthdays if you want. You can also delete this elseif if you don't care.
+		}
+	else //if the birthday is not listed above.
+		{
+			"\0\s[0]Your birthday is %(bornmonthprint) %(borndayprint). We'll remember.\e"
+			//note the use of envelopes to display the newly set birthday properly. You can replace this dialogue as well, and you can use %(bornmonthprint) and %(borndayprint) to display the month and day in the new dialogue, if you want.
+		}
+}
+
+//--Talk Rate
+//This is when the user chooses to adjust the talk rate in the config menu. The talk rate is how often the ghost will read some dialogue from aitalk.dic.
+
+Select.talkinter
+ 	{
+ 		"\0\s[23]\b2You want to change the conversation\npace? \w8\w4\s[32]I'd say we talk around every %(talktime)./
+		//note the new envelope here for %(talktime). You'll see it again in a second. You can replace the dialogue above with whatever you like, just make sure it ends with ./ and not \e.
+ 		\0\n\n[half]/
+ 		\![*]\q[Every 30 seconds,TALKMAX]\n/
+		\![*]\q[Every minute,TALKHIGH]\n/
+ 		\![*]\q[Every 3 minutes,TALKNORMAL]\n/
+		\![*]\q[Every 5 minutes,TALKPOOR]\n/
+ 		\![*]\q[Don't speak,TALKNONE]\n\n[half]/
+		\![*]\q[Don't change,TalksTill]\e"
+	}
+
+//If the user doesn't want to change the rate. You can change all of the dialogue in any of these options if you want to reflect the choice the user made. You TECHNICALLY could also change the value in talktime to reflect some other way of measuring time but I wouldn't recommend it, it'd just be confusing I'm sure.
+Select.TalksTill
+	{
+		"\0\s[32]\i[6]Fine with me.\e"
+	}
+
+//If the user chooses every 30 seconds.
+Select.TALKMAX
+	{
+ 		talktime = "30 seconds" //this sets up the envelope properly
+		aitalkinterval = 30 //this changes the actual rate
+		
+ 		"\0\s[27]You like hearing my voice, \w3don't you?\e"
+	}
+
+//If the user chooses every minute.
+Select.TALKHIGH
+	{
+ 		talktime = "minute"
+		aitalkinterval = 60
+		
+ 		"\0\s[0]Alright then. \w8\w6\s[4]I do like to talk.\e"
+	}
+
+//If the user chooses every three minutes.
+Select.TALKNORMAL
+	{
+ 		talktime = "3 minutes"
+		aitalkinterval = 180
+		
+ 		"\0\s[23]Sounds good to me. \w8\w6\s[7]Don't choke on your drink.\e"
+	}
+
+//If the user chooses every five minutes. This is the default rate the ghost will start up in, as seen in bootend.dic.
+Select.TALKPOOR
+	{
+ 		talktime = "5 minutes"
+		aitalkinterval = 300
+		
+ 		"\0\s[5]\i[6]A nice, \w3relaxing pace.\e"
+	}
+
+//If the user chooses to not have them speak. This is one case where you MIGHT want to make talktime equal something else, if you have a snappier way of saying the ghost won't talk. Make sure it flows well in your menus though, since it will be displayed in your config menu.
+Select.TALKNONE
+	{
+ 		talktime = "...encompassing, allconsuming silence"
+		aitalkinterval = 0
+		
+		"\0\s[14]Ah, \w3if you say so. \w8\w6\s[20]I'll just be waiting then.\e"
+	}
+
+	
+//This is when the user chooses to change their name. It's linked to the functions outlined in nameteach.dic. Nothing to touch here.
+Select.TEACHNAME
+	{
+		OnTeachName	
+	}
+
+	
+//If the user selects cancel in a menu. Replace as you like, or just leave them blank.
+Select.CANCEL
+	{
+		"Mhm.\e"
+		"Hm.\e"
+		"Hmmm.\e"
+		"Alright.\e"
+ 	}
+
+	
+//Going back to the MenuRun function we finished above, this is if someone selects the Functions option, linked to dosomething. As you can see, it ends up as Select.dosomething.
+
+Select.dosomething
+{
+ 		"\0\s[24]\i[6]\b2Work\w2.\w2.\w2.\n\n"
+		
+		//I mentioned this above in MenuRun, but you can have a set of multiple different responses that may randomly appear when the menu is opened if you offset them from the rest with the -- dashes below this note. Try opening this menu yourself with the template to see how it works. The character will randomly choose one line as the intro. 
+		//If you don't want to deal with this, just delete the extra lines and leave one. Otherwise, replace the dialogue above as you like, but note that they don't end with \e here. You can leave the rest of this below alone.
+		--
+ 		"\![*]\q[Check for new updates,keroupdatecheck]\n\n/
+		\![*]\q[Open Calendar,CALENDAR]\n/
+		\![*]\q[Check Email,MailCheck]\n/
+		\![*]\q[Open SSP Preferences,sspconfig]\n/
+		\![*]\q[Empty Recycle Bin,ChoiceGarbagecan]\n/
+		\![*]\q[System Information,ChoiceSystemInformation]\n\n/
+ 		\![*]\q[Back to main menu,BACKTOMENU]\e"
+}
+
+//When the user clicks Open Calender. This will open the calender function of SSP, an in-built feature that you don't have to worry about in the least.
+Select.CALENDAR
+{
+	"\0\s[15]Bartender, \w3would you bring us a calendar, please?\w8\![open,calendar]\e"
+	
+	//You can replace the dialogue here up to the \!.
+	//Advanced users, can you break it down yet? It's basically just using \! to open calender.exe or dll or whatever SSP uses to make it happen.
+}
+
+//When the user chooses SSP preferences. This will open the same window that shows up if you right click your ghost and go to Utilities - Preferences.
+Select.sspconfig
+{
+	"\0\s[1]Looking over the menu?\w8\![open,configurationdialog]\e"
+	
+	//Again, you can replace up to the \! tag.
+}
+
+//If the user chooses to empty the recycle bin.
+Select.ChoiceGarbagecan
+{
+	_gomicheck = FUNCTIONEX("gomi.dll", "-n")	//Don't touch this line. for those curious, it's referencing a SAORI, which are optional user-made plug-in dlls you can download to enable different functions on your ghost. gomi.dll is one included with this template. All SAORI are in Japanese (maybe Korean or Chinese as well idk) and many have disappeared by now, so don't concern yourself very much with SAORI. They're for skilled developers, mostly.
+	
+	if _gomicheck == 0 //If the recycle bin is empty.
+	{
+		"\0\s[24]\i[6]There's nothing to clean, \w3\s[33]\i[6]we barely drank anything.\e"
+		
+		//This isn't the usual flat template dialogue, mostly because I wanted to show that this is a good place to use s[-1], which I covered in the walkthrough file. You can have your ghost disappear momentarily like they're going to check your recycle bin, then come back. \c clears the ghost's balloon of text. Replace dialogue as you desire.
+	}
+	elseif _gomicheck >= 1 //If the recycle bin is full.
+	{
+		"\0\s[23]When I say I take out the trash, \w3\s[28]this is not quite what I mean\w2.\w2.\w2.\w8\w8\![raise,OnGarbagecanEmpty]\s[32]\i[6] But here you go.\e"
+		
+		
+	}
+}
+
+
+//This is for the SAORI, don't touch it.
+OnGarbagecanEmpty
+{
+	_gomi = FUNCTIONEX("gomi.dll", "-f")
+}
+
+//This is when the user chooses System Information. Don't touch any of this either. For those curious though, note that this is done using another SAORI, this time saori_cpuid.dll.
+Select.ChoiceSystemInformation
+{
+	os_name = FUNCTIONEX("saori_cpuid.dll","os.name")
+	os_version = FUNCTIONEX("saori_cpuid.dll","os.version")
+	cpu_name = FUNCTIONEX("saori_cpuid.dll","cpu.name")
+	cpu_clockex = FUNCTIONEX("saori_cpuid.dll","cpu.clockex")
+	"/
+	\0\s[0]\b[2]/
+	\_q\f[bold,1]OS:\f[bold,0] %(os_name) %(os_version)\n/
+	\f[bold,1]Memory Load:\f[bold,0] %(memoryload)%\n/
+	\f[bold,1]Physical Memory:\f[bold,0] %(memoryavailphys) KB\n/
+	\f[bold,1]CPU:\f[bold,0] %(cpu_name) %(cpu_clockex)MHz\n/
+	\f[bold,1]Ukagaka:\f[bold,0] %property[baseware.version]/
+	\e"
+}
+	
+//This is when the user chooses to check their email. The rest of this function plays out in etc.dic. You can leave this alone.
+Select.MailCheck
+	{
+		"\![biff]\e"
+	}
+
+
+	
+//---- OnChoiceTimeout ---------------------------------------------------------
+//If the user is given a menu with choices, but doesn't pick one of the choices, it will eventually time out. At that point, they will say this dialogue. Replace with whatever you like, or leave it blank.
+
+OnChoiceTimeout
+ {
+	"\0\s[6]Hmph.\e"
+	"\0\s[6]H\w1m\w1m\w1m.\e"
+	"\0\s[6]Anyway\w2.\w2.\w2.\e"
+	"\0\s[6]Alright then.\e"
+ }
+
+ 
+
+//When clicked, this will automatically tell the ghost to check for updates. More detail on updates in etc.dic. You can leave this alone.
+Select.keroupdatecheck
+{
+	"\0\s[29]Let's see what's on the menu\w2.\w2.\w2.\![updatebymyself]\e"
+}
+
+//--Test Variable --------------------------------------------------------
+//I briefly mentioned the test variable in bootend.dic and possibly in etc.dic as well, I'm not sure. What exactly is the test variable? Basically, it's a place you can plug in anything you want to test out. While you can use Script Input to test most of your ghost's dialogue, there are some lines it just can't do, and it can't help you test choices. But the test variable can!
+//You can also use this to test functions as I mentioned above by adding \![raise,function] at the end of it, although you can do this with Script Input as well. Advanced Users, the test variable is also great for testing out any new stuff you may add to your ghost, like mode settings, item values, functions, raising or lowering numbers, what have you, particularly if you have a bunch you want to change all at once.
+
+//It is ALWAYS A GOOD IDEA to test your dialogue! If you won't check it with the test variable, at least test it with Script Input! It'll save you so much trouble!
+
+Select.resetti
+{
+	"\s[6]\i[5]{Are you sure you want to reset? \w8\w6He won't remember any of your conversations or interractions anymore.)\s[6]\w8\w6\n\n\_q\![*]\q[RESET,resettiyes]\n\n\![*]\q[No,CANCEL]"
+}
+
+Select.resettiyes
+{
+	"\s[6]\i[5]\w8.\w8.\w8.\w8.\w8.\w8.\w8. \w8\w8\w8\f[italic,true]the Book has been rewritten to begin anew.\f[italic,false]\s[6]"
+	username = "Stranger"
+	whiskey = 0
+	dazaidrinkcount = 0
+	dazaimood = 1
+	friendscore = 0
+	monthdialogue = 0
+	yourname = 0
+	dazainame = 0
+	odaknown = 0
+	angoknown = 0
+	chuuyaknown = 0
+	mafiaknown = 0
+	know1 = 0
+	know2 = 0
+	know3 = 0
+	know4 = 0
+	know5 = 0
+	know6 = 0
+	know7 = 0
+	workyask = 0
+	akutagawasonemomenttoshine = 0
+	daysspent = 1
+	dazaipat = 0
+	dazaiage = 0
+	timecheckio = 1
+	abilityknown = 0
+	mushroomtalk = 0
+	yourorder = 0
+	waterorder = 0
+}

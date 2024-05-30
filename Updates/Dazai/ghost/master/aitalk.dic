@@ -1,0 +1,919 @@
+﻿//---------------------------AI Talk--------------------------
+
+
+OnAiTalk
+ {
+	if RAND(100) < communicateratio
+ 	{
+ 		StartCommunicate
+	}
+ 	else
+	{
+ 		if mikireflag == 0
+		{
+			if CHAIN.IDName == "" {
+ 				lastTalk = RandomTalk
+			}
+			else {
+				lastTalk = ChainTalk
+			}
+			lastTalk
+		}
+ 		else
+		{ 
+		MikireTalk
+ 		}
+	}
+ }
+
+
+
+
+Dazaithoughts
+{
+	"\w8\w6\w4\n\n[half]\0\s[1]\i[6]Whether or not I should pay my tab today."
+	"\w8\w6\w4\n\n[half]\0\s[9]I'm planning my next suicide attempt."
+	"\w8\w6\w4\n\n[half]\0\s[6]Stray dogs."
+	"\w8\w6\w4\n\n[half]\0\s[8]Crimes."
+	"\w8\w6\w4\n\n[half]\0\s[6]Nothing."
+	"\w8\w6\w4\n\n[half]\0\s[0]\i[6]Nothing, \w3nothing."
+	"\w8\w6\w4\n\n[half]\0\s[5]You don't want to know, trust me."
+	"\w8\w6\w4\n\n[half]\0\s[6]The color of that wall."
+	"\w8\w6\w4\n\n[half]\0\s[15]What drink should I order next."
+	"\w8\w6\w4\n\n[half]\0\s[6]Work stuff."
+	"\w8\w6\w4\n\n[half]\0\s[6]Which knot should I use on my next noose\w2.\w2.\w2."
+	"\w8\w6\w4\n\n[half]\0\s[0]\i[6]The moon\w2.\w2.\w2."
+	"\w8\w6\w4\n\n[half]\0\s[7]Beautiful ladies."
+	"\w8\w6\w4\n\n[half]\0\s[6]Cats."
+	"\w8\w6\w4\n\n[half]\0\s[48]\i[6]Don't worry about it."
+}
+
+RandomTalk : nonoverlap_pool
+{
+	//No name land
+	if dazainame == 0
+	{
+		"\0\s[2]\i[6]Whe\w1e\w1e\w1re a\w1a\w1a\w1r\w1e\w1e\w1e\w1e the\w1e\w1e\w1e\w1e\w1y\w2.\w2.\w2.\e"
+		
+		"\0\s[52](He is sipping his drink.)\e"
+		
+		"\0\s[5]\i[5](He's watching you with interest.)\s[5]\e"
+		
+		"\0\s[1]\i[5](He's watching you.)\s[1]\e"
+		
+		"\0\s[1]\i[5](He's observing you.)\s[1]\e"
+		
+		"\0\s[0]\i[5](He's looking at you.)\s[0]\e"
+		
+		"\0\s[1]\i[5](He's looking at you again.)\s[1]\e"
+		
+		"\0\s[0]\i[5](He's looking at you again.)\s[0]\e"
+		
+		"\0\s[41]What makes the world turn\w3.\w3.\w3.\e"
+		
+		"\0\s[29]The nature of humanity\w3.\w3.\w3.\e"
+		
+		"\0\s[6]\i[5](It looks like he's watching the bartender.)\s[6]\e"
+		
+		"\0\s[6]\i[5](It look like he's thinking about something.)\s[6]\e"
+		
+		"\0\s[5]\i[6]\i[5](He is humming a tune.)\s[5]\i[6]\e"
+		
+		"\0\s[1]\i[6]\i[5](He's quiet.)\s[1]\i[6]\e"
+		
+		"\0\s[13]\i[6]I'm bored.\e"
+		
+		"\0\s[1]\i[6]What a day\w3.\w3.\w3.\e"
+		
+		"\0\s[0]\i[6]\i[5](He is humming along to the bar music.)\s[0]\i[6]\e"
+		
+		//"\0\s[0](He is playing with the ice in his glass.)\e"
+		
+		//Phone dialogue
+		"\0\s[44]\i[5](He's typing something\w2.\w2.\w2.\w2)\s[44]\e"
+		"\0\s[44]\i[5](He's appears to have a flip phone\w2.\w2.\w2.\w2)\s[44]\e"
+		"\0\s[45]\i[5](He's typing something\w2.\w2.\w2.\w2)\s[45]\e"
+		"\0\s[45]\i[5](He's typing something\w2.\w2.\w2.\w2)\s[45]\n\n[half]\w8\w6He\w3-he\w3.\w3.\w3.\e"
+		
+		"\0\s[44]\i[5](It looks like he's reading his messages.)\e"
+		
+		"\0\s[44]\i[5](He looks annoyed.)\e"
+		
+		if friendscore > 15
+		{
+			"\0\s[0]I'm surprised you haven't asked my name yet\w3.\w3.\w3. \w8\w6\s[7]Oh, I don't mind.\e"
+			"\0\s[23]\i[6]Ah, \w3the air of mystery\w3.\w3.\w3.\e"
+		}
+		
+	}
+	//Sad Dazai hours
+	if dazainame == 1 && dazaimood <= -5
+	{
+		"\0\s[2]\i[6]Whe\w1e\w1e\w1re a\w1a\w1a\w1r\w1e\w1e\w1e\w1e the\w1e\w1e\w1e\w1e\w1y\w2.\w2.\w2.\e"
+		
+		"\0\s[52](He is sipping his drink.)\e"
+		
+		"\0\s[1]\i[5](He's watching you.)\s[1]\e"
+		
+		"\0\s[6]\i[5](He seems to be angry.)\s[6]\e"
+		
+		"\0\s[41]\i[5](He seems to be annoyed.)\s[41]\e"
+		
+		"\0\s[6]\i[5](He seems displeased.)\s[6]\e"
+		
+		"\0\s[29]\i[5](He doesn't seem happy.)\s[29]\e"
+		
+		"\0\s[1]\i[5](He's observing you.)\s[1]\e"
+		
+		"\0\s[12]\i[5](He glares a you.)\s[12]\e"
+		
+		"\0\s[18]\i[5](He's not in the mood.)\s[18]\e"
+		
+		"\0\s[1]\i[5](He's looking at you again.)\s[1]\e"
+		
+		"\0\s[41]What makes the world turn\w3.\w3.\w3.\e"
+		
+		"\0\s[29]Maybe I should just head out\w3.\w3.\w3.\e"
+		
+		"\0\s[29]Maybe I should just leave\w3.\w3.\w3.\e"
+		
+		"\0\s[29]The nature of humanity\w3.\w3.\w3.\e"
+		
+		"\0\s[6]\i[5](It looks like he's watching the bartender.)\s[6]\e"
+		
+		"\0\s[6]\i[5](It look like he's thinking about something.)\s[6]\e"
+		
+		"\0\s[1]\i[6]\i[5](He's quiet.)\s[1]\i[6]\e"
+		
+		"\0\s[13]\i[6]I'm bored.\e"
+		
+		"\0\s[1]\i[6]What a day\w3.\w3.\w3.\e"
+		
+		//"\0\s[0](He is playing with the ice in his glass.)\e"
+		
+		//Phone dialogue
+		"\0\s[44]\i[5](He's typing something\w2.\w2.\w2.\w2)\s[44]\e"
+		"\0\s[44]\i[5](He's appears to have a flip phone\w2.\w2.\w2.\w2)\s[44]\e"
+		"\0\s[45]\i[5](He's typing something\w2.\w2.\w2.\w2)\s[45]\e"
+		
+		"\0\s[44]\i[5](It looks like he's reading his messages.)\e"
+		
+		"\0\s[44]\i[5](He looks annoyed.)\e"
+		
+		
+	}
+	
+	//Normal Dialogue i guess
+	if dazainame == 1 && dazaimood > -5
+	{
+		"\0\s[3]\i[6]These two are taking their time\w3.\w3.\w3.\e"
+		
+		if odaknown == 1 && RAND(100) < 51
+		{	
+			"\0\s[29]I wonder if Odasaku will come today\w3.\w3.\w3.\e"
+			"\0\s[7]I need to tell Oda about this\w3.\w3.\w3.\e"
+			"\0\s[6]Oda should've came here by now\w3.\w3.\w3.\e"
+			"\0\s[7]I hope Odasaku will like this\w3.\w3.\w3.\e"
+			"\0\s[6]I hope Oda will tell me about his work stuff again\w3.\w3.\w3.\e"
+		}
+		
+		if angoknown == 1 && RAND(100) < 51
+		{	
+			"\0\s[29]I wonder if Ango will have time today\w3.\w3.\w3.\e"
+			"\0\s[6]I hope Ango doesn't have to drive today.\e"
+			"\0\s[2]\i[6]Glasses man, \w4what's taking you so long?\e"
+			"\0\s[44]Oh, \w3Ango's texting me.\e"
+			"\0\s[7]I wonder what Ango will say\w3.\w3.\w3.\e"
+			"\0\s[7]Ango won't like this\w3.\w3.\w3.\e"
+		}
+		
+		if chuuyaknown == 1 && RAND(100) < 51
+		{	
+			"\0\s[44]Ugh\w4.\w4.\w4. \w8\w6It's Chuuya again\w4.\w4.\w4. \w8\w6When will he learn that I don't take his calls?\e"
+			"\0\s[21]I think I have another mission with the hat rack tomorrow\w3.\w3.\w3. \w8\w6\s[29]I need another drink.\e"
+			"\0\s[2]\i[6]When will that stupid shortie learn\w3.\w3.\w3.\e"
+			"\0\s[6]I wonder how Corruption feels like\w3.\w3.\w3.\e"
+			"\0\s[44]Damn, \w3it's that slug again\w3.\w3.\w3. \w8\w6\s[2]\i[6]I wish I could just block him, \w3but then he'll just show up to my house and yell a whole bunch.\e"
+			"\0\s[6]I need to invent some more names for Chuuya\w3.\w3.\w3. \w8\w6I've been repeating myself too much, \w3can't let him think I started to respect him.\e"
+			"\0\s[6]Double Black\w3.\w3.\w3.\e"
+		}
+
+		if mafiaknown == 1 && RAND(100) < 51
+		{	
+			"\0\s[6]I need to reload my gun later\w3.\w3.\w3.\e"
+			"\0\s[2]\i[6]I have so much paperwork to do\w3.\w3.\w3. \w8\w6\s[7]Maybe I should hire a secretary.\e"
+			"\0\s[6]I still need to report to Mori\w3.\w3.\w3. \w8\w4\s[9]\i[6]Eh, \w3\s[30]he can wait until tomorrow.\e"
+			"\0\s[6]I need to call Hirotsu tomorrow\w3.\w3.\w3.\e"
+			"\0\s[41]Death and violence\w3.\w3.\w3. \w8\w6Urges and desires\w3.\w3.\w3.\e"
+		}
+		
+		"\0\s[2]\i[6]Whe\w1e\w1e\w1re a\w1a\w1a\w1r\w1e\w1e\w1e\w1e the\w1e\w1e\w1e\w1e\w1y\w2.\w2.\w2.\e"
+		
+		"\0\s[52](Dazai is sipping his drink.)\e"
+		
+		"\0\s[5]\i[5](He's watching you with interest.)\s[5]\e"
+		
+		"\0\s[1]\i[5](He's watching you.)\s[1]\e"
+		
+		"\0\s[1]\i[5](He's observing you.)\s[1]\e"
+		
+		"\0\s[0]\i[5](He's looking at you.)\s[0]\e"
+		
+		"\0\s[1]\i[5](He's looking at you again.)\s[1]\e"
+		
+		"\0\s[0]\i[5](He's looking at you again.)\s[0]\e"
+		
+		"\0\s[6]\i[5](It looks like he's watching the bartender.)\s[6]\e"
+		
+		"\0\s[6]\i[5](It look like he's thinking about something.)\s[6]\e"
+		
+		"\0\s[5]\i[6]\i[5](Dazai is humming a tune.)\s[5]\i[6]\e"
+		
+		"\0\s[1]\i[6]\i[5](He's quiet.)\s[1]\i[6]\e"
+		
+		"\0\s[13]\i[6]I'm bored.\e"
+		
+		"\0\s[1]You know what I want? \w8\w6\s[0]\i[6]Crab.\e"
+		
+		"\0\s[41]What makes the world turn\w3.\w3.\w3.\e"
+		
+		"\0\s[29]The nature of humanity\w3.\w3.\w3.\e"
+		
+		"\0\s[2]\i[6]I need to bring my coat to the dry-cleaners\w2.\w2.\w2.\e"
+		
+		"\0\s[0]\i[6]\i[5](Dazai is humming along to the bar music.)\s[0]\i[6]\e"
+		
+		//"\0\s[0](Dazai is playing with the ice in his glass.)\e"
+		
+		"\i[5](You ask Dazai what he's thinking about.)\n[half]%(Dazaithoughts)\e"
+		"\i[5](You ask Dazai what he's thinking about.)\n[half]%(Dazaithoughts)\e"
+		"\i[5](You ask Dazai what he's thinking about.)\n[half]%(Dazaithoughts)\e"
+		"\i[5](You ask Dazai what he's thinking about.)\n[half]%(Dazaithoughts)\e"
+		"\i[5](You ask Dazai what he's thinking about.)\n[half]%(Dazaithoughts)\e"
+		"\i[5](You ask Dazai what he's thinking about.)\n[half]%(Dazaithoughts)\e"
+		"\i[5](You ask Dazai what he's thinking about.)\n[half]%(Dazaithoughts)\e"
+		
+		if friendscore > 1 && RAND(100) < 7
+		{
+			"\0\s[1]\i[6]I need to buy a new toaster\w3.\w3.\w3. \w8\w8\i[5]\n\n[half](You ask him what \s[1]\i[5]happened to his last toaster.)\w8\w8\n\n[half]\s[33]\i[6]It went swimming.\e" 
+		}
+
+		"\0\s[1]\i[6]I need to get another rope\w3.\w3.\w3. \w8\w8\i[5]\n\n[half](You ask him what \s[1]\i[5]he needs a rope for.)\w8\w8\n\n[half]\s[32]It's always useful, \w3is it not?\e"
+		
+		"\0\s[6]Perhaps I should try a silk rope\w3.\w3.\w3.\e"
+		
+		"\0\s[1]\i[6]Maybe I should order something \nnew\w3.\w3.\w3.\e"
+		
+		"\0\s[5]I hope I'm not boring you.\e"
+		
+		"\0\s[1]\i[6]What a day\w3.\w3.\w3.\e"
+		
+		"\0\s[48]\i[6]You should drink more.\e"
+		
+		"\0\s[0]I hope your day went better than mine.\e"
+		
+		"\0\s[18]\i[5](He's peeking at you.)\s[18]\e"
+		
+		"\0\s[20]\i[5](You can hear him sigh.)\s[20]\e"
+		
+		"\0\s[0]\i[6]\i[5](He seems content.)\s[0]\i[6]\e"
+		
+		"\0\s[6]\i[5](He pokes the bandage on his cheek.)\s[6]\e"
+		
+		
+		//Phone dialogue
+		"\0\s[44]\i[5](He's typing something\w2.\w2.\w2.\w2)\s[44]\e"
+		"\0\s[45]\i[5](He's typing something\w2.\w2.\w2.\w2)\s[45]\e"
+		"\0\s[45]\i[5](He's typing something\w2.\w2.\w2.\w2)\s[45]\n\n[half]\w8\w6He\w3-he\w3.\w3.\w3.\e"
+		
+		"\0\s[44]\i[5](It looks like he's reading his messages.)\e"
+		
+		"\0\s[44]\i[5](He looks annoyed.)\e"
+		
+		"\0\s[58]It's Mori again\w2.\w2.\w2.\e"
+		
+		"\0\s[44]I really need to block this number\w2.\w2.\w2.\e"
+		
+		
+		
+		//Chains
+		if waterorder == 1 && RAND(100) < 55
+		{
+			"\0\s[3]Maybe you should order something stronger than water.\e"
+			"\0\s[3]Are you not going to order anything else today?\e"
+		}
+		if yourorder == 0 && waterorder == 0 && RAND(100) < 40
+		{
+			"\0\s[0]\i[6]Are you doing to make an order?\e"
+			"\0\s[48]Aren't you going to order anything?\e"
+			"\0\s[50]\i[6]Did you come to a bar to just sit around?\e"
+			"\0\s[50]\i[6]Did you come to a bar to just sit around? \w8\w6\s[47]Or you're here just for the pleasure of my company?\e"
+			"\0\s[49]\i[6]Are you going to make me drink alone?\e"
+		}
+		if yourorder > 5 && RAND(100) < 30
+		{
+			"\0\s[6]You sure drink a lot today\w3.\w3.\w3.\e"
+		}
+		
+		if friendscore > 20 && abilityknown == 0 && RAND(100) < 42
+		{
+			"\0\s[41]I wonder\w4.\w4.\w4. \w8\w6\s[48]Do you have a special ability?\w8\w4\n\n\_q\![*]\q[I do,abilityyes]\n\![*]\q[I don't,abilityno]\n\![*]\q[What's that,abilitywhat]\e" 
+		}
+
+		if friendscore > 30 && mushroomtalk == 0 && RAND(100) < 42
+		{
+			"\0\s[47]Do you know any places where one can acquire some mushrooms?\w8\w6\n\n\_q\![*]\q[What,mushroomwhat]\n\![*]\q[No,mushroomno]\n\![*]\q[I do,mushroomyes]\e" 
+		}
+		
+		if friendscore > 70 && chuuyaknown == 0
+		{
+			"\0\s[6]\i[5](You hear a phone buzz.)\n\n[half]\w8\w6\s[58]Ugh, \w4this slug\w4.\w4.\w4.\e:chain=chuuyachain"
+		}
+		
+		if friendscore > 200 && mafiaknown == 0
+		{
+			"\0\s[1]\i[5](Dazai throws you a long look.)\s[1]\e:chain=mafiachain"
+		}
+
+
+
+
+		
+		if friendscore > 1
+		{
+			"\0\s[46]Quiz t\w2i\w2i\w2i\w2i\w2me! \w8\w6\s[23]Which one would you choose \w3- death by %(dead1) or %(dead2)?\w8\w4\n\n\_q\![*]\q[First,thinkythink]\n\![*]\q[Second,thinkythink]\n\![*]\q[None,dazaiboo]\e" 
+		}
+		if friendscore > 10
+		{
+			"\0\s[46]Quiz t\w2i\w2i\w2i\w2i\w2me! \w8\w6\s[23]Which one would you choose \w3- death by %(dead1) or %(dead2)?\w8\w4\n\n\_q\![*]\q[First,thinkythink]\n\![*]\q[Second,thinkythink]\n\![*]\q[None,dazaiboo]\e" 
+		}
+		if friendscore > 10
+		{
+			"\0\s[46]Quiz t\w2i\w2i\w2i\w2i\w2me! \w8\w6\s[23]Which one would you choose \w3- death by %(dead1) or %(dead2)?\w8\w4\n\n\_q\![*]\q[First,thinkythink]\n\![*]\q[Second,thinkythink]\n\![*]\q[None,dazaiboo]\e" 
+		}
+		
+		//in the know
+		if know1 == 1 && RAND(100) < 20
+		{
+			"\0\s[29]\f[sub,true]Atsushi\w5.\w5.\w5. \w8\w8Who's that?\w5.\w5.\f[sub,false]\e"
+			"\0\s[29]\f[sub,true]Atsushi\w5.\w5.\w5. \w8\w8Should I know you?\w5.\w5.\f[sub,false]\e"
+		}
+		if know2 == 1 && RAND(100) < 10
+		{
+			"\0\s[29]\f[sub,true]Kunikida\w5.\w5.\w5. \w8\w8Who's that?\w5.\w5.\f[sub,false]\e"
+			"\0\s[29]\f[sub,true]Kunikida\w5.\w5.\w5. \w8\w8Should I know you?\w5.\w5.\f[sub,false]\e"
+		}
+		if know3 == 1 && RAND(100) < 10
+		{
+			"\0\s[29]\f[sub,true]Yosano\w5.\w5.\w5. \w8\w8Who's that?\w5.\w5.\f[sub,false]\e"
+			"\0\s[29]\f[sub,true]Yosano\w5.\w5.\w5. \w8\w8Should I know you?\w5.\w5.\f[sub,false]\e"
+		}
+		if know4 == 1 && RAND(100) < 10
+		{
+			"\0\s[29]\f[sub,true]Fukuzawa\w5.\w5.\w5. \w8\w8Who's that?\w5.\w5.\f[sub,false]\e"
+			"\0\s[29]\f[sub,true]Fukuzawa\w5.\w5.\w5. \w8\w8Should I know you?\w5.\w5.\f[sub,false]\e"
+		}
+		if know5 == 1 && RAND(100) < 10
+		{
+			"\0\s[29]\f[sub,true]Ranpo\w5.\w5.\w5. \w8\w8Who's that?\w5.\w5.\f[sub,false]\e"
+			"\0\s[29]\f[sub,true]Ranpo\w5.\w5.\w5. \w8\w8Should I know you?\w5.\w5.\f[sub,false]\e"
+		}
+		if know6 == 1 && RAND(100) < 10
+		{
+			"\0\s[29]\f[sub,true]Kenji\w5.\w5.\w5. \w8\w8Who's that?\w5.\w5.\f[sub,false]\e"
+			"\0\s[29]\f[sub,true]Kenji\w5.\w5.\w5. \w8\w8Should I know you?\w5.\w5.\f[sub,false]\e"
+		}
+		if know7 == 1 && RAND(100) < 10
+		{
+			"\0\s[29]\f[sub,true]Tanizaki\w5.\w5.\w5. \w8\w8Who's that?\w5.\w5.\f[sub,false]\e"
+			"\0\s[29]\f[sub,true]Tanizaki\w5.\w5.\w5. \w8\w8Should I know you?\w5.\w5.\f[sub,false]\e"
+		}
+		if akutagawasonemomenttoshine == 0 && RAND(300) < 2 && mafiaknown == 1
+		{
+			akutagawasonemomenttoshine = 1
+			"\0\s[44]Oh, \w4someone's messaging me\w3.\w3.\w3. \w8\w4\s[21]Nevermind, \w3it's just my mentee.\0\i[5](You tell him\s[3]\i[5] he never mentioned mentoring someone.)\n\n[half]\w8\w6\s[13]Eh. \w8\w8\i[6]E\w2e\w2e\w2h\w2. \w8\w6\s[23]\i[6]Let's go back to talking about interesting stuff. \w8\w6\s[32]Where were we again?\e"
+		}
+		
+		//days of the week
+		if weekday == 1 && RAND(100) < 30
+		{
+			"\0\s[1]\i[6]People always complain about people who drink on Monday. \w8\w6\s[41]What difference does it make?\e"
+		}
+		if weekday == 5 && RAND(100) < 30
+		{
+			"\0\s[6]I heard Friday is a prime day for drinking. \w8\w6I wonder why\w3.\w3.\w3.\e"
+		}
+		if weekday == 6 && RAND(100) < 30
+		{
+			"\0\s[0]Peple can drink to their heart's content on Saturday, \w4\i[6]isn't that right?\e"
+		}
+		if weekday == 0 && RAND(100) < 40
+		{
+			"\0\s[44]Who's texting me on Sunday of all days?\w3.\w3.\e"
+		}
+		//These ifs check for the time of day as defined in bootend.dic. Do you remember the words used for each chunk of time in GetTimeSlot? These are the same words!
+		if timeslot == "earlymorning"
+		{
+			"\0\s[43]\i[6]Where are these two? \w8\w6I swear the sun must be out already, \w4and they are yet to show up\w2.\w2.\w2.\e"
+		}
+		if timeslot == "morning"
+		{
+		//	"\0\s[0]This is dialogue for the morning.\w8\1\s[10]Yup.\e"
+		}
+		if timeslot == "lunch"
+		{
+			"\0\s[0]Maybe I should order something to snack on\w3.\w3.\w3.\e"
+		}
+		if timeslot == "afternoon"
+		{
+		//	"\0\s[0]This is dialogue for the afternoon.\w8\1\s[10]Yup.\e"
+		}
+		if timeslot == "evening"
+		{
+			"\0\s[0]\i[6]It's a nice evening, \w4isn't it.\e"
+		}
+		if timeslot == "latenight"
+		{
+			"\0\s[41]It's getting late\w2.\w2.\w2.\e"
+			"\0\s[6]It's quite late\w3 - \w[0]how much longer are you planning to stay?\w8\w6\s[23]\i[6] You wouldn't leave me alone,\w3 would you?\e"
+			"\0\s[6]The moon must be high\w2.\w2.\w2.\e"
+		}
+		if timeslot == "midnight"
+		{
+			"\0\s[6]Zero \w2zero\w3.\w3.\w3. \w8\w8zero\w3.\w3.\w3. \w8\w8zero.\e"
+			"\0\s[23]\i[6]It's \w1n\w1i\w1i\w1i\w1i\w1i\w1ght.\e"
+			"\0\s[15]It's past midnight. \w8\w6\s[41]I failed to die for another day.\e"
+		}
+		
+		{ 
+		"\0\s[6]Which suicide method should I try next?\w2.\w2.\w8\w8 "
+		//Notice that the last few tags set up Triangle's pose before going into his text below. You don't have to do this if you want each response to have its own pose, but if he'll have the same expression regardless of what he's saying, you might as well save yourself the work. Note this does not end with \e either, since the dialogue isn't done yet.
+		-- //You've probably seen these double dashes before in other .dic files. In this case, these dashes enclose a set of multiple responses. More on double dashes in the coding page on the walkthrough site.
+		"Drowning, \w3perhaps?"
+		"Maybe poisoning?"
+		"Mushrooms?"
+		"Bees?"
+		"Should I employ my toaster again?"
+		"\s[7]Sit in Mori's chair?"
+		"Another noose?"
+		"I should reread the book\w2.\w2.\w2."
+		-- //closing dashes
+		"\e" //Dialogue ends
+		}
+		
+	}
+
+	//--Chains
+	//Chain dialogue is unique. A dialogue chain consists of multiple bits of dialogue that get called in order over a period of time.
+	
+	
+//	"\0\s[0]This will lead to the second piece of chained dialogue.\w8\1\s[10]This will have another chain attached to it.\e:chain=anotherchain"
+	
+	//Here, this will link to a different chain to continue the conversation. You can scroll down to the section on chains to see this in action.
+	
+	
+	//--If statements
+if monthdialogue == 1
+{
+		if month >= 12
+		{
+			"\0\s[0]This is dialogue for December.\w8\1\s[18]A cold month?\e"
+			
+			"\0\s[0]This is more dialogue for December.\w8\1\s[18]Still cold?\e"
+		}
+		
+		//So you can use these to check for any number of situations. I think this feature is really neat, so I'm going to set up some quick default responses for the months, days, and time of day. If you don't want to do these, you can just delete this whole set of ifs down to the //--Double Envelopes section below.
+		//You can also nest ifs within these, so you could check if it was the 25 of April in the morning for example. You can also add or take away dialogue from these as you like, so if you want to have five dialogue options for April or one for January, you can totally do that.
+		
+		if month == 1
+		{
+			"\0\s[0]This is dialogue for January.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for January.\w8\1\s[10]That it is.\e"
+		}
+		if month == 2
+		{
+			"\0\s[0]This is dialogue for February.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for February.\w8\1\s[10]That it is.\e"
+		}
+		if month == 3
+		{
+			"\0\s[0]This is dialogue for March.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for March.\w8\1\s[10]That it is.\e"
+		}
+		if month == 4
+		{
+			"\0\s[0]This is dialogue for April.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for April.\w8\1\s[10]That it is.\e"
+		}
+		if month == 5
+		{
+			"\0\s[0]This is dialogue for May.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for May.\w8\1\s[10]That it is.\e"
+		}
+		if month == 6
+		{
+			"\0\s[0]This is dialogue for June.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for June.\w8\1\s[10]That it is.\e"
+		}
+		if month == 7
+		{
+			"\0\s[0]This is dialogue for July.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for July.\w8\1\s[10]That it is.\e"
+		}
+		if month == 8
+		{
+			"\0\s[0]This is dialogue for August.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for August.\w8\1\s[10]That it is.\e"
+		}
+		if month == 9
+		{
+			"\0\s[0]This is dialogue for September.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for September.\w8\1\s[10]That it is.\e"
+		}
+		if month == 10
+		{
+			"\0\s[0]This is dialogue for October.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for October.\w8\1\s[10]That it is.\e"
+		}
+		if month == 11
+		{
+			"\0\s[0]This is dialogue for November.\w8\1\s[10]Yup.\e"
+			
+			"\0\s[0]This is more dialogue for November.\w8\1\s[10]That it is.\e"
+		}
+}
+
+}
+
+	
+dead1
+{
+	"hanging"
+	"drowning"
+	"eating soap"
+	"poisoning"
+	"falling down a cliff"
+	"being stabbed"
+	"choking"
+	"disappearing into the abyss"
+	"getting hit by a train"
+	"a plane crash"
+	"getting eaten by bugs"
+	"getting mauled by a tiger"
+	"an explosion"
+	"drug overdose"
+	"space"
+	"BEES"
+	"an apple"
+	"a block of tofu"
+	"sickness"
+	"a werewolf"
+	"falling down the elevator shaft"
+	"suffocating in a closet"
+}
+dead2
+{
+	"strangulation"
+	"bleeding out"
+	"falling down the stairs"
+	"burning alive"
+	"getting mauled by wolves"
+	"getting mauled by a bear"
+	"being shot"
+	"a vampire"
+	"starvation"
+	"slipping in the shower"
+	"a heart stroke"
+	"a heat stroke"
+	"alcohol overdose"
+	"a special ability"
+	"giant rats"
+	"a car crash"
+	"getting shot by your crazy work partner"
+	"endless crushing loneliness"
+	"unrequited love"
+	"getting hit by an icycle"
+}
+Select.thinkythink
+{
+	friendscore += 1
+	"\0\s[0]\i[6]I see\w2.\w2.\w2.\e"
+	"\0\s[6]I see, \w3I see\w2.\w2.\w2.\e"
+	"\0\s[1]\i[6]Is that your choice\w2.\w2.\w2.\e"
+	"\0\s[3]\i[6]I see your preferences\w2.\w2.\w2.\e"
+	"\0\s[0]\i[6]I see your preferences\w2.\w2.\w2.\e"
+	"\0\s[46]I'd make the same choice!\e"
+	"\0\s[14]Really?\e"
+	"\0\s[9]Really?\e"
+	"\0\s[22]Really?\e"
+	"\0\s[1]Really? \w8\w7\s[6]Huh\w2.\w2.\w2.\e"
+	"\0\s[6]Hm\w2.\w2.\w2.\e"
+	"\0\s[6]You think so?\w3.\w3.\e"
+	"\0\s[3]Huh.\e"
+	"\0\s[0]Sensible choice.\e"
+}
+Select.dazaiboo
+{
+	friendscore -= 1
+	"\0\s[21]You're no fun.\e"
+	"\0\s[21]Tch.\e"
+	"\0\s[13]C'm\w2o\w2o\w2o\w2n, \w4it's just a question!\e"
+	"\0\s[23]\i[6]Don't be shy, \w3I won't judge!\e"
+	"\0\s[22]B\w3o\w3o.\e"
+	"\0\s[0]C'm\w2o\w2o\w2o\w2n\w2.\w2.\w2.\e"
+	"\0\s[13]\i[6]I was just asking\w2.\w2.\w2.\e"
+	"\0\s[6]Hm.\e"
+	"\0\s[21]It's not that tough of a choice\w3.\w3.\w3.\e"
+}
+Select.mushroomwhat
+{
+	mushroomtalk += 1
+	friendscore += 2
+	"\i[5](You ask him what he's talking about.)\n\n[half]\w8\w6\0\s[48]You know,\w4 mushrooms? \w8\w6\s[46]I want to give poisoning another try,\w5 but last time I tried mushrooms I just went on a wild trip.\w8\w6\s[39] I would like to give it another shot,\w4\s[21] but one stupid hat rack took all the supply I had.\w8\w6\s[2]\i[6] That fiend\w4.\w4.\w4.\e"
+}
+Select.mushroomno
+{
+	mushroomtalk += 1
+	friendscore += 2
+	"\i[5](You tell him you are not helping him in his mushroom quest.)\n\n[half]\w8\w6\0\s[43]Come o\w3o\w3o\w3o\w3n.\w8\w6\s[34] Only around hundred mushrooms species are actually poisonous, \w5\s[38]and in those only around twenty are lethal.\w8\w6\s[13] Let me take the chance!\w8\w6\s[34] Russian mushroom roulette!\n\n[half]\w8\w6\i[5](You tell him no.)\n\n[half]\w8\w6\0\s[6]Hmph.\e"
+}
+Select.mushroomyes
+{
+	mushroomtalk += 1
+	friendscore += 2
+	"\i[5](You tell him to try going to the forest.)\n\n[half]\w8\w8\0\s[2]Ugh,\w4 but that's so far, \w4\s[6]and usually forest mushrooms are actually edible. \w8\w6\s[29]Maybe I should scour the side of the road again\w4.\w4.\w4.\e"
+}
+Select.abilityyes
+{
+	abilityknown += 1
+	friendscore += 2
+	"\i[5](You tell him you do have a special ability.)\n\n[half]\w8\w6\0\s[48]You do? \w8\w6\s[46]That's amazing!\w8\w6\s[8] Those are incredibly rare,\w4\s[0] it's always interesting to meet a Gifted person.\n\w8\w6\s[23]Lucky me.\e"
+}
+Select.abilityno
+{
+	abilityknown += 1
+	friendscore += 2
+	"\i[5](You tell him you don't have a special ability.)\n\n[half]\w8\w6\0\s[35]\i[6]Unsurprising \w6- \s[38]Gifted people are a rarity. \w8\w6\s[16]There's so few that they are something of a folk's tale amongst the normal people. \w8\w6\s[0]There seems to be plenty in Yokohama \w5- \s[8]perhaps the city is a magnet for Gifted\w3.\w3.\w3.\n\w8\w8\w8\w6\s[0]Ah, \w3don't mind my ramblings.\e"
+}
+Select.abilitywhat
+{
+	abilityknown += 1
+	friendscore += 2
+	"\i[5](You tell him you don't know what he means.)\n\n[half]\0\s[14]I'm not surprised \w4\s[35]\i[6]- special abilities are incredibly rare.\w8\w6\s[33]\nThere's people that posses supernatural powers \w4- Gifted. \w8\w6\s[38]\nTheir power is called a special ability.\w8\w6\s[0] You may have one all your life and don't even know about it. \w8\w6\i[6]Sounds fun,\w4 doesn't it?\w8\w6\s[12]\i[6] Alas, \w4\s[12]some special abilities are akin to a curse for its bearer.\w8\w6\s[41] That's the nature of life \w8\w3- cruelty.\e"
+}
+Select.chuuyano
+{
+	"\i[5](You decide to let him be.)\w8\w6\n\n[half]\0\s[44]I should just turn my phone off, \w3\s[49]\i[6]honestly\w3.\w3.\w3.\e"
+}
+Select.chuuyayes
+{
+	chuuyaknown += 1
+	"\i[5](You tell Dazai he should probably answer.)\w8\w6\n\n[half]\0\s[13]And let him win? \w8\w6\s[15]No chance.\w8\w8\s[38] Believe me, \w4\s[34]you wouldn't want to talk to Chuuya either.\w8\w6\s[22] I am already subjected to his presence at work, \w4\s[43]\i[6]I don't want to suffer him in my spare time\w3.\w3.\w3.\n\n[half]\w8\w6\i[5](Maybe you can ask him something about this Chuuya person\w3.\w3.\w3.)\s[43]\i[6]\e"
+}
+
+//--Chains
+//Here is where you will put your bits of chain dialogue. They are outside of OnAiTalk, which makes them a bit more flexible as I mentioned above.
+//Each chain function will go through each part of the chain in order even if it's in one function, until it goes to \e:chain=end which will end the chain, as you could probably guess. So you can put the entire chain dialogue into one place.
+
+chuuyachain
+{{CHAIN
+	//this will happen the first time the chain is called
+	"\i[5](You hear a phone buzz. \w8\w6\s[41]\i[5]Dazai ignores it.)\s[41]\e"
+	
+	//they will then go to this dialogue next
+	"\0\s[6]\i[5](You hear a phone buzz. \w8\w6You ask Dazai if it's something important.)\n\n[half]\w8\w6\s[0]\i[6]Oh, \w4not at all. \w8\w6\s[2]It's just my work partner. \w8\w6\s[39]Ignore that.\e"
+	
+	//this will be the last piece of dialogue in the chain, then they will go back to their normal dialogue
+	"\0\s[6]\i[5](You hear a phone buzz.)\n\n[half]\w8\w6\s[58]Stupid hat rack. \w8\w6If  didn't answer your fifth call,\w5 why would you think I'll answer nineteenth?\w3.\w3.\w8\w4\n\n\_q\![*]\q[Tell him to answer,chuuyayes]\n\![*]\q[Let him be,chuuyano]\e:chain=end"
+}}CHAIN
+
+mafiachain
+{{CHAIN
+	//this will happen the first time the chain is called
+	dazaimood = -30
+	"\0\s[41]\i[5](Dazai seems to be deep in thought.)\s[41]\e"
+	
+	"\0\s[29]\i[5](Dazai seems to be upset by something.)\s[29]\e"
+	
+	"\0\s[24]\i[5](He looks like he's about to say something, \w8\s[41]\i[5]but quickly turns away.)\s[41]\e"
+	
+	//they will then go to this dialogue next
+	"\0\s[20]\w8.\w8.\w8.\w8.\w8.\w8.\w8.\w8.\w8.\w8.\w8\w8 Hey.\w8\w8\w5\s[18] I got a question for you.\i[5]\w8\w6\n\n[half](You ask Dazai what is it.)\n\n[half]\w8\w6\s[18]You've been quite nice to me, \w4you know. \w8\w6\s[20]A shady looking stranger in a bar\w4.\w4.\w4. \w8\w8\w8\w6\s[18]Aren't you afraid that I can be someone dangerous?\w8\w4\n\n\_q\![*]\q[I am afraid,mafiayes]\n\![*]\q[I am not afraid,mafiano]\e"
+	
+	//this will be the last piece of dialogue in the chain, then they will go back to their normal dialogue
+	"\0\s[41]Nevermind\w4.\w4.\w4.\w8\w8\i[5]\n\n[half](It seems he doesn't want to talk about it anymore.)\s[41]\e:chain=end"
+}}CHAIN
+
+Select.mafiayes
+{
+	mafiaknown += 1
+	dazaimood = -8
+	"\i[5](You tell Dazai that you are afraid of him.)\w8\w6\n\n[half]\0\s[20]Heh\w4.\w4.\w4.\w8\w8\s[15] You're smart.\w8\w8\s[9] And not wrong. \w8\w8\s[31]It's probably obvious that I am a criminal of some sort, \w4isn't it?\w8\w8\s[29] But if your kidness was a result of fear, \w6you wouldn't have returned to this bar after our first meeting. \w8\w8\s[12]I don't\w5.\w5.\w5. \w8\w5get it.\w8\w8\w8\w8\w8 \n\w8.\w8.\w8.\w8\w8\i[6]Let me introduce myself again. \w8\w8\s[23]I'm\nDazai Osamu,\w5 one of the five executives of the Port Mafia. \w8\w6\s[48]\i[6]You're welcome to walk away,\w4 or run if you wish.\w8\w8\s[41] If you never come here again after today, \w5I'll understand,\w5 too.\w8\w8\s[15] I just wanted to tell you\w8.\w8.\w8.\w8\w8\w8\s[12]\i[6] what kind of person you're wasting your time on.\e:chain=end"
+}
+Select.mafiano
+{
+	mafiaknown += 1
+	dazaimood = -8
+	"\i[5](You tell Dazai that you are not afraid of him.)\w8\w6\n\n[half]\0\s[18].\w8.\w8.\w8.\w8.\w8.\w8.\w8. \w8\w8\w8\s[19]That's incredibly stupid. \w8\w6You should be. \w8\w8\s[15]Humans usually have a sense of self preservation. \w8\w8\s[56]Have you ever heard of Demon Prodigy? \w8\w8The youngest executive in the history of the Port Mafia? \w8\w8\s[54]What if I told you that he was sitting in front of you right now? \w8\w8Would you be afraid then?\n\w8.\w8.\w8.\w8.\w8\s[55]\w8.\w8.\w8.\w8.\w8\w8\s[48]\i[6]You're welcome to walk away,\w4 or run if you wish.\w8\w8\s[41] If you never come here again after today, \w5I'll understand,\w5 too.\w8\w8\s[15] I just wanted to tell you\w8.\w8.\w8.\w8\w8\w8\s[12]\i[6] what kind of person you're\nwasting your time on.\e:chain=end"
+}
+//Pay careful attention to the CHAIN text and double brackets for these. Double brackets, CHAIN, dialogue, double brackets, CHAIN. If you are planning on making chains, I'd recommend just copying and pasting the chain example here and changing the dialogue and name of the function as you need. Less likely for mistakes to happen, you know?
+//Note also it ends with \e:chain=end, basically ending the chain.
+
+anotherchain
+{{CHAIN
+	"\0\s[0]This is the second example of chained dialogue.\1\w8\s[10]This will only have two parts.\e"
+	
+	"\0\s[0]This is the last piece of the second example of chained dialogue\1\w8\s[10]This will end here.\e:chain=end"
+}}CHAIN
+
+//You can make chains as long or as shot as you want! Just make sure to end the chain when you're done.
+
+
+//Alright, we're done with the random conversations for now, but there are a few other things in aitalk that we'll need to fill out too.
+
+
+//-OnMinuteChange
+//These are time-related bits of dialogue for your ghost to say. If you're uninterested, you can delete it all except for a line for MikireTalk. So it'd look something like
+
+//OnMinuteChange
+//{
+//HourCheck
+//--
+//if mikireflag == 1
+// 	{
+// 		MikireTalk
+//	}
+//}
+
+//But I think these are kind of neat, so I'd leave them myself.
+
+
+//Keeps track of if an hour has passed. Just ignore this.
+HourCheck
+{
+if passmin >= 59
+	{
+		passmin = 0
+		passhour = passhour + 1
+	}
+}
+
+
+OnMinuteChange //This is what will trigger time-based dialogue for your Ghost.
+ {
+	HourCheck //checks to see if an hour has passed, ignore it
+	--
+ 	if minute == 0 && timecheckio == 1 //These ifs will check what time it is. Here, it's seeing if the minute equals zero...
+	{
+ 		if hour == 12 //And the hour equals 12, meaning it's noon. You can change this to some other hour if you want.
+		{
+ 			"\0\s[43]\i[6]Ugh, \w3it feels like I've been waiting until morning\w3.\w3.\w3.\e"
+			//Replace with appropriate dialogue as you want.
+		}
+ 		elseif hour == 0 //If the hour is zero, aka midnight. Again, you can change this to whatever hour you want to check for. This section is flexible! You can also add more elseifs if you want to check for other hours.
+		{
+ 			"\0\s[41]Zero zero\w4.\w4.\w4.\w8\w8 zero\w4.\w4.\w4.\w8\w8 zero\w4.\w4.\w4.\e"
+			if mafiaknown = 1
+			{
+				"\0\s[0]It's midnight. \w8\w6\s[8]The mafia wakes.\e"
+			}
+ 			//"\0\s[0]This is the third bit of dialogue for midnight.\e"
+			//Then replace the dialogue with what's appropriate.
+		}
+		else
+		{
+			"\0\s[41]It's %(hour12)'o clock.\e"
+			"\0\s[9]Hey, it's %(hour12)'o clock. \w8\w6\s[48]Shall we have another drink?\e"
+			"\0\s[6]It's %(hour12)'o clock, how much longer is it going to take?\w3.\w3.\w3.\e"
+			"\0\s[43]\i[6]It's already %(hour12)'o clock, \w3and neither of them are here\w3.\w3.\w3.\e"
+			//%(hour12) stores the time. This is a general top of the hour notification. I personally like this because it helps me keep track of time when I've been working on something, so when a ghost is all "Hey it's 3 o clock" I can be like woah really when did that happen. If you think this is annoying though, you can just delete this bit of dialogue to leave this else statement blank, or leave "" in here instead.
+		}
+	}
+	//You can also check for more specific times! For example...
+	elseif hour == 23 && minute == 55 //this checks to see if the hour is 23 and the minutes are at 55... essentially, 11:55 pm.
+	{
+		"\0\s[41]5 minutes to midnight.\e"
+		//Replace with what you like!
+	}
+	elseif hour == 7 && minute == 30 && weekday == 0 //Here, it's checking for a specific time on a specific day. You can add things to your time checks just like this by using the AND operator, && (more about operators at the walkthrough page). This adds up to 7:30 am, Sunday. If you have a favorite TV program on at some time, you could have your ghost comment on when it comes on like this.
+	{			
+		//"\0\s[0]It's 7:30 on Sunday.\e"
+		//Replace with what's appropriate.
+	}
+	elseif dazaimood < 1
+	{
+		dazaimood += 1
+	}
+	
+	//If you're not interested in these more specific checks, you can delete those last two elseifs and just leave the one for minute==0, or clear them all out as mentioned above, although leave in the HourCheck and mikireflag bits.
+	
+	//Don't touch this part.
+	elseif mikireflag == 1
+ 	{
+ 		MikireTalk
+	}
+ }
+
+//--OnSecondChange
+//Like the above, this handles what happens every time a second goes by. Most of this you will not have to touch.
+
+OnSecondChange
+ {
+	if passsec == 59
+ 		{
+	 	passsec = 0
+ 		passmin = passmin + 1
+		}
+ 	else
+ 		{
+	 	passsec = passsec + 1
+		}
+	if mikireflag == 0 && reference1 == 1 //Dialogue for putting them off the screen. You could make this a unique line if you wanted (Like "Hey! What are you doing?"), and have MikireTalk below be for if they continue to be offscreen ("Why are you leaving me out here? Help!" for example). I'll add an example bit of dialogue and comment it out, you can uncomment it and use it if you like, or just leave it out and use MikireTalk below.
+	{
+		//"\0\s[0]You've moved me off screen."
+		
+		MikireTalk
+	}
+	if mikireflag == 1 && reference1 == 0 //Dialogue for coming back on the screen
+	{
+		EndMikireTalk
+	}
+	mikireflag = reference1 //reference1 is if the ghost is offscreen or not
+	if reference2 == 1
+	{
+ 		//This dialogue is for when the two characters are overlapping each other. If you don't want your characters to care, you can just leave this blank.
+		
+ 		//"\0\s[0]Me and Triangle are overlapping.\w8\1\s[19]That's strange since your resolution is %screenwidthx%screenheight, %(username). Shouldn't we have enough space?\4\e"
+		
+		//You can see here the use of two envelopes, screenwidth and screenheight, to tell the user their resolution. Oddly, they are not in parentheses. I'm not sure why this is, but they don't display right otherwise. An odd quirk with these two envelopes.
+		//Note also how Triangle moves away at the end of the dialogue. This is due to the \4 tag. That will make any one character move away from the other if they are able. I talked about this tag and its counterpart tag \5 in the SakuraScript page on the walkthrough.
+	}
+ }
+
+ //---- MikireTalk ---------------------------------------------------------------------
+ //MikireTalk is dialogue for when your main character is off-screen. Like if you dragged Girl over to the side of your monitor until she was partially concealed by it.
+ 
+MikireTalk
+ {
+	//"\0\s[0]I'm off the screen.\w8\1\s[10]You can push Ctrl-Shift-F12 to bring her back."
+	//Note the hotkey combo Triangle mentions. He's telling the truth, that should bring her back on the screen.
+ }
+
+ //----EndMikireTalk--------------------------------------------------------------------
+ //For after you bring the character back on screen.
+ 
+EndMikireTalk
+ {
+	//"\0\s[0]I'm no longer off the screen.\w8\1\s[19]What a shame.\w8\0\s[9]\n\n[half]Shut up.\e"
+ }
+
+
+//**** OnSurfaceRestore *****************************************************************
+//OnSurfaceRestore is a handy function. What this does is that after a short period of time, the ghost will go back to its default pose, so you won't have a ghost stuck in one expression for too long. It's also helpful if you've made one of the characters disappear using \s[-1] in dialogue and didn't bring them back at the end of it. This will do that for you.
+//I'm going to comment out the if/else statements in this because the circumstances in which they'd come up seem pretty unlikely and unnecessary if you're just going to be making a simple ghost. You can just leave this function alone and move on if you want. However, if you do want to use them, just uncomment the lines by deleting the slashes and fill in the info as you need.
+
+//*********************Advanced User Info*******************************
+//You can put if statements in OnSurfaceRestore to make exceptions for certain poses, or to make sure that once they're in a certain pose, they stay in that pose. For example, if you turn my Hunter and Smoker ghost into eggplants, there's a check for the their eggplant pose numbers to make sure they STAY eggplants when OnSurfaceRestore is called.
+//You can also use OnSurfaceRestore to clean up things that might be left on the screen, primarily from using p[number]\s[] to call up other objects or characters. Just make sure to add a p[number]\s[-1] to OnSurfaceRestore, and that should get rid of it each time the ghost cleans itself up.
+//***********************************************************************
+
+OnSurfaceRestore
+ {
+ 	
+	//IDLE POSE
+	if dazaimood >= -5
+	{"\0\%(happypose)\1\s[-1]"}
+	else
+	{"\0\%(sadpose)\1\s[-1]"}
+	
+ }
+
+ 
+ //--OnKeyPress
+ //This defines the hotkeys your ghost will use. You can change these to whatever you want, but I don't really know why you would. I'd just leave this alone. Advanced Users can add new hotkeys attached to whatever function if you want.
+ 
+OnKeyPress
+{
+	if reference0 == "t"
+	{
+	OnAiTalk
+	}
+	elseif reference0 == "r"
+	{
+	OnLastTalk
+	}
+	elseif reference0 == "f1"
+	{
+	"\![open,readme]"
+	}
+}
