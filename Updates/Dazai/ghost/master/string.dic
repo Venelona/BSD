@@ -26,7 +26,8 @@ On_username
 
 On_homeurl
 {
-	"https://raw.githubusercontent.com/Venelona/BSD/main/Updates/Dazai/"
+	//"https://raw.githubusercontent.com/Venelona/BSD/main/Updates/Dazai/"
+	"https://venelona.github.io/BSD/Updates/Dazai/"
 }
 
 
