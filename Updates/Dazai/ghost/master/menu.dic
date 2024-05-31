@@ -1,4 +1,4 @@
-﻿//---------------------------Menu--------------------------
+﻿//---------------------------Menus--------------------------
 
 //--OpenSakuraMenu
 //This is a bit of intro dialogue before the main character opens their menu. You can see below that there are three pieces of separate dialogue listed before it goes to MenuRun. The character will randomly choose one of those pieces of dialogue before opening the rest of their menu. You can customize this with individual greetings for the character, such as "Yes, %(username)?" or "Need something, %(username)?" or things like that. Note that none of the lines end with \e!

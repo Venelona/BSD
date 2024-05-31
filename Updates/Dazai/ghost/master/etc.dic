@@ -291,7 +291,7 @@ OnBIFFFailure
  
 OnUpdateBegin
  {
-	"\0\s[44]Give me a second, \w4I need to check for any important messages. Look at me, being a responsible worker\w3.\w3.\w3.\w8\e"
+	"\0\s[44]Give me a second, \w4I need to check for any important messages. \w8\w6Look at me, being a responsible worker\w3.\w3.\w3.\w8\w8\w6\e"
 	
 	//"\1\s[10]Another message for starting the update process.\w8\0\s[0]Hope you read the directions properly.\w8\e"
  }
