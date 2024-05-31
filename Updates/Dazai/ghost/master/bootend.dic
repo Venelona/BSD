@@ -49,6 +49,7 @@ OnFirstBoot
 	mushroomtalk = 0
 	yourorder = 0
 	waterorder = 0
+	//catpose = 0
 	
 	
 	if reference0 == 0 //Don't touch this line.
@@ -212,7 +213,63 @@ dayslot
 //-----------------------Normal Booting----------------------------
 
 //From this point on, the dialogue will be for any normal boot of your ghost. You can specialize this for certain days or times if you like, or if you're uninterested, leave it very simple.
+catpose
+{
+	"i[11]"
+	"i[12]"
+	"i[13]"
+	"i[14]"
+	"i[15]"
+	"i[16]"
+}
 
+happyposes
+{
+	"s[0]\%(catpose)"
+	"s[0]\%(catpose)"
+	"s[1]\%(catpose)"
+	"s[6]\%(catpose)"
+	"s[6]\%(catpose)"
+	"s[7]\%(catpose)"
+	"s[9]\%(catpose)"
+	"s[9]\%(catpose)"
+	"s[12]\%(catpose)"
+	"s[15]\%(catpose)"
+	"s[15]\%(catpose)"
+	"s[16]\%(catpose)"
+	"s[41]\%(catpose)"
+	"s[41]\%(catpose)"
+	"s[41]\%(catpose)"
+	"s[0]\i[6]\%(catpose)"
+	"s[1]\i[6]\%(catpose)"
+	"s[0]\i[6]\%(catpose)"
+	"s[1]\i[6]\%(catpose)"
+	"s[44]\%(catpose)"
+	"s[44]\%(catpose)"
+	"s[45]\%(catpose)"
+	"s[20]\%(catpose)"
+	"s[57]\%(catpose)"
+	"s[48]\i[6]\%(catpose)"
+}
+
+sadposes
+{
+	"s[1]\%(catpose)"
+	"s[1]\i[6]\%(catpose)"
+	"s[41]\%(catpose)"
+	"s[41]\%(catpose)"
+	"s[41]\%(catpose)"
+	"s[41]\%(catpose)"
+	"s[6]\%(catpose)"
+	"s[6]\%(catpose)"
+	"s[15]\%(catpose)"
+	"s[15]\%(catpose)"
+	"s[20]\%(catpose)"
+	"s[20]\%(catpose)"
+	"s[44]\%(catpose)"
+	"s[44]\%(catpose)"
+	"s[57]\%(catpose)"
+}
 
 happypose
 {
@@ -278,11 +335,10 @@ OnBoot
 	
 	
  	//IDLE POSE
-	if dazaimood > -5
+	if dazaimood >= -5
 	{"\0\%(happypose)\1\s[-1]"}
 	else
 	{"\0\%(sadpose)\1\s[-1]"}
-	
 	
 	--
 	

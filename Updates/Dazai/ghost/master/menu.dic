@@ -1561,4 +1561,5 @@ Select.resettiyes
 	mushroomtalk = 0
 	yourorder = 0
 	waterorder = 0
+//	catpose = 0
 }
