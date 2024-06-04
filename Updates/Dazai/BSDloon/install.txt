@@ -1,0 +1,5 @@
+charset,Shift_JIS
+type,balloon
+name,BSDloon
+directory,BSDloon
+refresh,1
